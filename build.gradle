@@ -7,8 +7,18 @@
  */
 
 plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+
+    // Apply the plugins to add support for Spring Boot
+    id 'org.springframework.boot' version '2.0.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.7.RELEASE'
+
+    // Apply the plugin to add support for jacoco test coverage report
+    id 'jacoco'
 }
 
 repositories {
@@ -26,6 +36,13 @@ dependencies {
 
     // Use TestNG framework, also requires calling test.useTestNG() below
     testImplementation 'org.testng:testng:7.0.0'
+
+    compile 'org.springframework.boot:spring-boot-starter-aop'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+
+    compile 'org.hibernate:hibernate-core:5.4.11.Final'
+    compile 'org.springframework:spring-orm:5.1.6.RELEASE'
+    compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
 }
 
 test {
