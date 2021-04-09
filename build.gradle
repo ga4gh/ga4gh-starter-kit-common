@@ -7,9 +7,6 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
-
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
 
@@ -19,12 +16,18 @@ plugins {
 
     // Apply the plugin to add support for jacoco test coverage report
     id 'jacoco'
+
+    id 'maven-publish'
 }
+
+group 'org.ga4gh'
+version '0.1.0'
 
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
