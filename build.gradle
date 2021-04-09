@@ -46,6 +46,10 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.4.11.Final'
     compile 'org.springframework:spring-orm:5.1.6.RELEASE'
     compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+    compile 'org.xerial:sqlite-jdbc:3.8.11.2'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.security:spring-security-test'
 }
 
 test {

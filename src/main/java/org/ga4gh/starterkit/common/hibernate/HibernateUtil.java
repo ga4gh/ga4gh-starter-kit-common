@@ -2,6 +2,9 @@ package org.ga4gh.starterkit.common.hibernate;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.persistence.PersistenceException;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,6 +22,7 @@ public class HibernateUtil {
 
     @PostConstruct
     public void buildSessionFactory() {
+        
         try {
             Configuration configuration = new Configuration();
             configuration.setProperties(getHibernateProps().getAllProperties());
@@ -26,10 +30,31 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(annotatedClass);
             }
             setSessionFactory(configuration.buildSessionFactory());
-            setConfigured(true);    
+            setConfigured(true);
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
+    }
+
+    /* CRUD Methods */
+
+    public <T extends HibernateEntity> T readEntityObject(Class<T> entityClass, String id, boolean loadRelations) throws HibernateException {
+        Session session = newTransaction();
+        T object = null;
+        try {
+            object = session.get(entityClass, id);
+            if (object != null && loadRelations) {
+                object.loadRelations();
+            }
+            endTransaction(session);
+        } catch (PersistenceException e) {
+            throw new HibernateException(e.getMessage());
+        } catch (Exception e) {
+            throw new HibernateException(e.getMessage());
+        } finally {
+            endTransaction(session);
+        }
+        return object;
     }
 
     public Session newTransaction() {

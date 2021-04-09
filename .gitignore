@@ -34,3 +34,5 @@ build
 .classpath
 .settings
 bin
+
+*.db

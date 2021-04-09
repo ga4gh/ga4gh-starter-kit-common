@@ -16,7 +16,7 @@ public class HibernateProps {
     private String dateClass;
 
     public HibernateProps() {
-
+        setAllDefaults();
     }
 
     public Properties getAllProperties() {
@@ -127,5 +127,18 @@ public class HibernateProps {
 
     public String getDateClass() {
         return dateClass;
+    }
+
+    private void setAllDefaults() {
+        setDriverClassName(HibernatePropsDefaults.DRIVER_CLASS_NAME);
+        setUrl(HibernatePropsDefaults.URL);
+        setUsername(HibernatePropsDefaults.USERNAME);
+        setPassword(HibernatePropsDefaults.PASSWORD);
+        setPoolSize(HibernatePropsDefaults.POOL_SIZE);
+        setDialect(HibernatePropsDefaults.DIALECT);
+        setHbm2ddlAuto(HibernatePropsDefaults.HBM2DDL_AUTO);
+        setShowSQL(HibernatePropsDefaults.SHOW_SQL);
+        setCurrentSessionContextClass(HibernatePropsDefaults.CURRENT_SESSION_CONTEXT_CLASS);
+        setDateClass(HibernatePropsDefaults.DATE_CLASS);
     }
 }
