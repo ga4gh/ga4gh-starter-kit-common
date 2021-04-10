@@ -10,6 +10,8 @@ git:
   depth: false
 language: java
 jdk: oraclejdk11
+install:
+  - ./gradlew build
 before_script:
   - sqlite3 -version
   - make -version
