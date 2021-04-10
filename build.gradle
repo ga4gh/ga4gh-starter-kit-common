@@ -52,6 +52,10 @@ dependencies {
     testCompile 'org.springframework.security:spring-security-test'
 }
 
+bootJar {
+    enabled = false
+}
+
 test {
     // Use TestNG for unit tests
     useTestNG()
