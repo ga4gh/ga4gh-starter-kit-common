@@ -13,7 +13,7 @@ jdk: oraclejdk11
 before_script:
   - sqlite3 -version
   - make -version
-  - make clean-all
+  - make clean-sqlite
   - make sqlite-db-build
   - make sqlite-db-populate
 script: "./gradlew test"
