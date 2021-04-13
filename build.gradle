@@ -6,6 +6,15 @@
  * User Manual available at https://docs.gradle.org/6.1.1/userguide/java_library_plugin.html
  */
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
+
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
@@ -17,11 +26,14 @@ plugins {
     // Apply the plugin to add support for jacoco test coverage report
     id 'jacoco'
 
-    id 'maven-publish'
+    id 'io.codearte.nexus-staging' version '0.11.0'
 }
 
+apply plugin: 'com.bmuschko.nexus'
+
+archivesBaseName = 'ga4gh-starter-kit-common'
 group 'org.ga4gh'
-version '0.1.0'
+version '0.1.1'
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -52,6 +64,10 @@ dependencies {
     testCompile 'org.springframework.security:spring-security-test'
 }
 
+jar {
+    enabled = true
+}
+
 bootJar {
     enabled = false
 }
@@ -59,4 +75,47 @@ bootJar {
 test {
     // Use TestNG for unit tests
     useTestNG()
+}
+
+modifyPom {
+    project {
+        name 'ga4gh-starter-kit-common'
+        description 'Common utils library for GA4GH Starter Kit web services'
+        url 'https://github.com/ga4gh/ga4gh-starter-kit-common'
+        inceptionYear '2021'
+
+        scm {
+            url 'https://github.com/ga4gh/ga4gh-starter-kit-common'
+            connection 'scm:https://github.com/ga4gh/ga4gh-starter-kit-common.git'
+            developerConnection 'scm:git://github.com/ga4gh/ga4gh-starter-kit-common.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'jb-adams'
+                name 'Jeremy Adams'
+                email 'jeremy.adams@ga4gh.org'
+            }
+        }
+    }
+}
+
+extraArchive {
+    sources = true
+    tests = true
+    javadoc = true
+}
+
+nexus {
+    sign = true
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
 }
