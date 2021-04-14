@@ -14,3 +14,6 @@ sqlite-db-build:
 .PHONY: sqlite-db-populate
 sqlite-db-populate:
 	@sqlite3 ${DEVDB} < database/sqlite/populate-tables.migrations.sql
+
+.PHONY: sqlite-db-refresh
+sqlite-db-refresh: clean-sqlite sqlite-db-build sqlite-db-populate

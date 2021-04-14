@@ -38,6 +38,12 @@ public class Student implements HibernateEntity {
 
     }
 
+    public Student(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     /* Setters and Getters */
 
     public void setId(String id) {
