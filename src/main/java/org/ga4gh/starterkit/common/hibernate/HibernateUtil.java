@@ -3,7 +3,6 @@ package org.ga4gh.starterkit.common.hibernate;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.PersistenceException;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,6 +37,15 @@ public class HibernateUtil {
 
     /* CRUD Methods */
 
+    public <T extends HibernateEntity> void createEntityObject(Class<T> entityClass, T newObject) {
+        Session session = newTransaction();
+        try {
+            session.saveOrUpdate(newObject);
+        } finally {
+            endTransaction(session);
+        }
+    }
+
     public <T extends HibernateEntity> T readEntityObject(Class<T> entityClass, String id, boolean loadRelations) throws HibernateException {
         Session session = newTransaction();
         T object = null;
@@ -56,6 +64,37 @@ public class HibernateUtil {
         }
         return object;
     }
+
+    public <T extends HibernateEntity> void updateEntityObject(Class<T> entityClass, String oldId, String newId, T newObject) {
+        Session session = newTransaction();
+        try {
+            // update the object at the existing id
+            newObject.setId(oldId);
+            session.update(newObject);
+            // update the object's id via manual query
+            if (!newId.equals(oldId)) {
+                String updateId =
+                "UPDATE " + newObject.getClass().getName()
+                + " set id='" + newId + "'"
+                + " WHERE id='" + oldId + "'";
+                session.createQuery(updateId).executeUpdate();
+            }
+        } finally {
+            endTransaction(session);
+        }
+    }
+
+    public <T extends HibernateEntity> void deleteEntityObject(Class<T> entityClass, String id) {
+        Session session = newTransaction();
+        try {
+            T object = session.get(entityClass, id);
+            session.delete(object);
+        } finally {
+            endTransaction(session);
+        }
+    }
+
+    /* Convenience methods */
 
     public Session newTransaction() {
         Session session = getSessionFactory().getCurrentSession();
