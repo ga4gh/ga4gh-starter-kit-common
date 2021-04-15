@@ -1,9 +1,10 @@
 package org.ga4gh.starterkit.common.hibernate;
 
-public interface HibernateEntity {
+import java.io.Serializable;
 
-    public void setId(String id);
-    public String getId();
+public interface HibernateEntity<I extends Serializable> {
+
+    public void setId(I id);
+    public I getId();
     public void loadRelations();
-    
 }

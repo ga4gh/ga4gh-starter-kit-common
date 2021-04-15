@@ -1,5 +1,6 @@
 package org.ga4gh.starterkit.common.hibernate;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.PersistenceException;
@@ -12,7 +13,7 @@ public class HibernateUtil {
 
     private boolean configured;
     private HibernateProps hibernateProps;
-    private List<Class<? extends HibernateEntity>> annotatedClasses;
+    private List<Class<? extends HibernateEntity<? extends Serializable>>> annotatedClasses;
     private SessionFactory sessionFactory;
     
     public HibernateUtil() {
@@ -25,7 +26,7 @@ public class HibernateUtil {
         try {
             Configuration configuration = new Configuration();
             configuration.setProperties(getHibernateProps().getAllProperties());
-            for (Class<? extends HibernateEntity> annotatedClass : getAnnotatedClasses()) {
+            for (Class<? extends HibernateEntity<? extends Serializable>> annotatedClass : getAnnotatedClasses()) {
                 configuration.addAnnotatedClass(annotatedClass);
             }
             setSessionFactory(configuration.buildSessionFactory());
@@ -37,7 +38,7 @@ public class HibernateUtil {
 
     /* CRUD Methods */
 
-    public <T extends HibernateEntity> void createEntityObject(Class<T> entityClass, T newObject) {
+    public <I extends Serializable, T extends HibernateEntity<I>> void createEntityObject(Class<T> entityClass, T newObject) {
         Session session = newTransaction();
         try {
             session.saveOrUpdate(newObject);
@@ -46,7 +47,7 @@ public class HibernateUtil {
         }
     }
 
-    public <T extends HibernateEntity> T readEntityObject(Class<T> entityClass, String id, boolean loadRelations) throws HibernateException {
+    public <I extends Serializable, T extends HibernateEntity<I>> T readEntityObject(Class<T> entityClass, I id, boolean loadRelations) throws HibernateException {
         Session session = newTransaction();
         T object = null;
         try {
@@ -65,7 +66,7 @@ public class HibernateUtil {
         return object;
     }
 
-    public <T extends HibernateEntity> void updateEntityObject(Class<T> entityClass, String oldId, String newId, T newObject) {
+    public <I extends Serializable, T extends HibernateEntity<I>> void updateEntityObject(Class<T> entityClass, I oldId, I newId, T newObject) {
         Session session = newTransaction();
         try {
             // update the object at the existing id
@@ -84,7 +85,7 @@ public class HibernateUtil {
         }
     }
 
-    public <T extends HibernateEntity> void deleteEntityObject(Class<T> entityClass, String id) {
+    public <I extends Serializable, T extends HibernateEntity<I>> void deleteEntityObject(Class<T> entityClass, I id) {
         Session session = newTransaction();
         try {
             T object = session.get(entityClass, id);
@@ -131,11 +132,11 @@ public class HibernateUtil {
         return hibernateProps;
     }
 
-    public void setAnnotatedClasses(List<Class<? extends HibernateEntity>> annotatedClasses) {
+    public void setAnnotatedClasses(List<Class<? extends HibernateEntity<? extends Serializable>>> annotatedClasses) {
         this.annotatedClasses = annotatedClasses;
     }
 
-    public List<Class<? extends HibernateEntity>> getAnnotatedClasses() {
+    public List<Class<? extends HibernateEntity<? extends Serializable>>> getAnnotatedClasses() {
         return annotatedClasses;
     }
 
