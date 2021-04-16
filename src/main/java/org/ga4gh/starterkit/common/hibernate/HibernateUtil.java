@@ -1,6 +1,5 @@
 package org.ga4gh.starterkit.common.hibernate;
 
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

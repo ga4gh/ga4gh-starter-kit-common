@@ -3,11 +3,9 @@ package org.ga4gh.starterkit.common.requesthandler;
 import javax.annotation.Resource;
 
 import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
-import org.ga4gh.starterkit.common.hibernate.exception.EntityDoesntExistException;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
 import org.ga4gh.starterkit.common.testutil.Student;
 import org.ga4gh.starterkit.common.testutil.TestSpringConfig;
-import org.junit.AfterClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
