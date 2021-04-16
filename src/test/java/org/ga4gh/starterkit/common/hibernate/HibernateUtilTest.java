@@ -21,17 +21,20 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
             {
                 "20556714",
                 "Amy",
-                "Ellington"
+                "Ellington",
+                false
             },
             {
                 "30713324",
                 "Brian",
-                "McKenzie"
+                "McKenzie",
+                false
             },
             {
-                "41576881",
+                "55555555",
                 "William",
-                "Ramirez"
+                "Ramirez",
+                true
             }
         };
     }
@@ -44,21 +47,20 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
                     "12345678",
                     "Nadia",
                     "Murray"
-                )
+                ),
+                true,
+                null,
+                null
             },
             {
                 new Student(
-                    "22446688",
-                    "Allen",
-                    "Pacheko"
-                )
-            },
-            {
-                new Student(
-                    "33557799",
-                    "David",
-                    "Weigel"
-                )
+                    "12345678",
+                    "Nadia",
+                    "Murray"
+                ),
+                false,
+                "EntityExistsException",
+                "A(n) Student already exists at id 12345678"
             }
         };
     }
@@ -68,30 +70,36 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
         return new Object[][] {
             {
                 "12345678",
-                "87654321",
                 new Student(
-                    "87654321",
+                    "12345678",
                     "Nadia",
                     "Thomas"
-                )
+                ),
+                true,
+                null,
+                null
             },
             {
-                "22446688",
-                "88664422",
+                "12345678",
                 new Student(
                     "88664422",
-                    "Maurice",
-                    "Pacheko"
-                )
+                    "Nadia",
+                    "Smith"
+                ),
+                false,
+                "EntityMismatchException",
+                "Update requested at id 12345678, but new Student has an id of 88664422"
             },
             {
-                "33557799",
-                "99775533",
+                "99999999",
                 new Student(
-                    "99775533",
-                    "David",
-                    "Turcotte"
-                )
+                    "99999999",
+                    "Isaac",
+                    "Green"
+                ),
+                false,
+                "EntityDoesntExistException",
+                "No Student at id 99999999"
             }
         };
     }
@@ -99,59 +107,80 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
     @DataProvider(name = "deleteEntityObjectCases")
     public Object[][] deleteEntityObjectCases() {
         return new Object[][] {
-            {"87654321"},
-            {"88664422"},
-            {"99775533"}
+            {
+                "12345678",
+                true,
+                null,
+                null
+            },
+            {
+                "88664422",
+                false,
+                "EntityDoesntExistException",
+                "No Student at id 88664422"
+            }
         };
     }
 
     @Test(dataProvider = "readEntityObjectCases", groups = "read")
-    public void testReadEntityObject(String id, String expFirstName, String expLastName) {
+    public void testReadEntityObject(String id, String expFirstName, String expLastName, boolean expNull) {
         Assert.assertTrue(hibernateUtil.getConfigured());
         Student student = hibernateUtil.readEntityObject(Student.class, id, false);
-        Assert.assertEquals(student.getFirstName(), expFirstName);
-        Assert.assertEquals(student.getLastName(), expLastName);
+        if (expNull) {
+            Assert.assertNull(student);
+        } else {
+            Assert.assertNotNull(student);
+            Assert.assertEquals(student.getFirstName(), expFirstName);
+            Assert.assertEquals(student.getLastName(), expLastName);
+        }
     }
 
     @Test(dataProvider = "createEntityObjectCases", groups = "create", dependsOnGroups = "read")
-    public void testCreateEntityObject(Student newStudent) {
-        // assert the student doesn't currently exist
-        Student savedStudent = hibernateUtil.readEntityObject(Student.class, newStudent.getId(), false);
-        Assert.assertNull(savedStudent);
-        // create the student in the db
-        hibernateUtil.createEntityObject(Student.class, newStudent);
-        // access the saved student and verify its attributes
-        savedStudent = hibernateUtil.readEntityObject(Student.class, newStudent.getId(), false);
-        Assert.assertEquals(savedStudent.getId(), newStudent.getId());
-        Assert.assertEquals(savedStudent.getFirstName(), newStudent.getFirstName());
-        Assert.assertEquals(savedStudent.getLastName(), newStudent.getLastName());
+    public void testCreateEntityObject(Student newStudent, boolean expSuccess, String expException, String expMessage) {
+        try {
+            hibernateUtil.createEntityObject(Student.class, newStudent);
+            Assert.assertTrue(expSuccess);
+            // access the saved student and verify its attributes
+            Student savedStudent = hibernateUtil.readEntityObject(Student.class, newStudent.getId(), false);
+            Assert.assertEquals(savedStudent.getId(), newStudent.getId());
+            Assert.assertEquals(savedStudent.getFirstName(), newStudent.getFirstName());
+            Assert.assertEquals(savedStudent.getLastName(), newStudent.getLastName());
+        } catch (Exception ex) {
+            Assert.assertFalse(expSuccess);
+            Assert.assertEquals(ex.getClass().getSimpleName(), expException);
+            Assert.assertEquals(ex.getMessage(), expMessage);
+        }
     }
 
     @Test(dataProvider = "updateEntityObjectCases", groups = "update", dependsOnGroups = "create")
-    public void testUpdateEntityObject(String oldId, String newId, Student newStudentProps) {
-        // assert a student exists at the oldId
-        Student savedStudentOldId = hibernateUtil.readEntityObject(Student.class, oldId, false);
-        Assert.assertNotNull(savedStudentOldId);
-        // update the student in the db
-        hibernateUtil.updateEntityObject(Student.class, oldId, newId, newStudentProps);
-        // assert a student doesn't exist at the oldId
-        savedStudentOldId = hibernateUtil.readEntityObject(Student.class, oldId, false);
-        // assert the updated student attributes
-        Student savedStudentNewId = hibernateUtil.readEntityObject(Student.class, newId, false);
-        Assert.assertEquals(savedStudentNewId.getId(), newId);
-        Assert.assertEquals(savedStudentNewId.getFirstName(), newStudentProps.getFirstName());
-        Assert.assertEquals(savedStudentNewId.getLastName(), newStudentProps.getLastName());
+    public void testUpdateEntityObject(String id, Student newStudent, boolean expSuccess, String expException, String expMessage) {
+        try {
+            hibernateUtil.updateEntityObject(Student.class, id, newStudent);
+            Assert.assertTrue(expSuccess);
+            // access the saved student and verify its attributes
+            Student savedStudent = hibernateUtil.readEntityObject(Student.class, newStudent.getId(), false);
+            Assert.assertEquals(savedStudent.getId(), newStudent.getId());
+            Assert.assertEquals(savedStudent.getFirstName(), newStudent.getFirstName());
+            Assert.assertEquals(savedStudent.getLastName(), newStudent.getLastName());
+        } catch (Exception ex) {
+            Assert.assertFalse(expSuccess);
+            Assert.assertEquals(ex.getClass().getSimpleName(), expException);
+            Assert.assertEquals(ex.getMessage(), expMessage);
+        }
     }
 
+    
     @Test(dataProvider = "deleteEntityObjectCases", groups = "delete", dependsOnGroups = "update")
-    public void testDeleteEntityObject(String id) {
-        // assert a student exists at the id
-        Student savedStudent = hibernateUtil.readEntityObject(Student.class, id, false);
-        Assert.assertNotNull(savedStudent);
-        // delete the student
-        hibernateUtil.deleteEntityObject(Student.class, id);
-        // assert student no longer exists at the id
-        savedStudent = hibernateUtil.readEntityObject(Student.class, id, false);
-        Assert.assertNull(savedStudent);
+    public void testDeleteEntityObject(String id, boolean expSuccess, String expException, String expMessage) {
+        try {
+            hibernateUtil.deleteEntityObject(Student.class, id);
+            Assert.assertTrue(expSuccess);
+            Student savedStudent = hibernateUtil.readEntityObject(Student.class, id, false);
+            Assert.assertNull(savedStudent);
+        } catch (Exception ex) {
+            Assert.assertFalse(expSuccess);
+            Assert.assertEquals(ex.getClass().getSimpleName(), expException);
+            Assert.assertEquals(ex.getMessage(), expMessage);
+        }
     }
 }

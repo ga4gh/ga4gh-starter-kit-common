@@ -1,9 +1,12 @@
 package org.ga4gh.starterkit.common.hibernate;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.persistence.PersistenceException;
+import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
+import org.ga4gh.starterkit.common.hibernate.exception.EntityMismatchException;
+import org.ga4gh.starterkit.common.hibernate.exception.EntityDoesntExistException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,61 +41,59 @@ public class HibernateUtil {
 
     /* CRUD Methods */
 
-    public <I extends Serializable, T extends HibernateEntity<I>> void createEntityObject(Class<T> entityClass, T newObject) {
+    public <I extends Serializable, T extends HibernateEntity<I>> void createEntityObject(Class<T> entityClass, T newObject) throws EntityExistsException {
         Session session = newTransaction();
-        try {
-            session.saveOrUpdate(newObject);
-        } finally {
+        T existingObject = session.get(entityClass, newObject.getId());
+        if (existingObject != null) {
             endTransaction(session);
+            throw new EntityExistsException("A(n) " + entityClass.getSimpleName() + " already exists at id " + newObject.getId());
         }
+        session.save(newObject);
+        endTransaction(session);
     }
 
     public <I extends Serializable, T extends HibernateEntity<I>> T readEntityObject(Class<T> entityClass, I id, boolean loadRelations) throws HibernateException {
         Session session = newTransaction();
-        T object = null;
-        try {
-            object = session.get(entityClass, id);
-            if (object != null && loadRelations) {
-                object.loadRelations();
-            }
-            endTransaction(session);
-        } catch (PersistenceException e) {
-            throw new HibernateException(e.getMessage());
-        } catch (Exception e) {
-            throw new HibernateException(e.getMessage());
-        } finally {
-            endTransaction(session);
+        T object = session.get(entityClass, id);
+        if (object != null && loadRelations) {
+            object.loadRelations();
         }
+        endTransaction(session);
         return object;
     }
 
-    public <I extends Serializable, T extends HibernateEntity<I>> void updateEntityObject(Class<T> entityClass, I oldId, I newId, T newObject) {
-        Session session = newTransaction();
-        try {
-            // update the object at the existing id
-            newObject.setId(oldId);
-            session.update(newObject);
-            // update the object's id via manual query
-            if (!newId.equals(oldId)) {
-                String updateId =
-                "UPDATE " + newObject.getClass().getName()
-                + " set id='" + newId + "'"
-                + " WHERE id='" + oldId + "'";
-                session.createQuery(updateId).executeUpdate();
-            }
-        } finally {
-            endTransaction(session);
+    public <I extends Serializable, T extends HibernateEntity<I>> void updateEntityObject(Class<T> entityClass, I id, T newObject) throws EntityMismatchException, EntityDoesntExistException {
+        if (!newObject.getId().equals(id)) {
+            throw new EntityMismatchException("Update requested at id " + id + ", but new " + entityClass.getSimpleName() + " has an id of " + newObject.getId());
         }
+
+        Session session = newTransaction();
+        T oldObject = session.get(entityClass, id);
+        if (oldObject == null) {
+            endTransaction(session);
+            throw new EntityDoesntExistException("No " + entityClass.getSimpleName() + " at id " + id);
+        }
+        session.update(session.merge(newObject));
+        endTransaction(session);
     }
 
-    public <I extends Serializable, T extends HibernateEntity<I>> void deleteEntityObject(Class<T> entityClass, I id) {
+    public <I extends Serializable, T extends HibernateEntity<I>> void deleteEntityObject(Class<T> entityClass, I id) throws EntityDoesntExistException, EntityExistsException {
         Session session = newTransaction();
-        try {
-            T object = session.get(entityClass, id);
-            session.delete(object);
-        } finally {
+        T object = session.get(entityClass, id);
+        if (object == null) {
             endTransaction(session);
+            throw new EntityDoesntExistException("No " + entityClass.getSimpleName() + " at id " + id);
         }
+        session.delete(object);
+        endTransaction(session);
+
+        session = newTransaction();
+        object = session.get(entityClass, id);
+        if (object != null) {
+            endTransaction(session);
+            throw new EntityExistsException(entityClass.getSimpleName() + " at id " + id + " was not successfully deleted");
+        }
+        endTransaction(session);
     }
 
     /* Convenience methods */
