@@ -21,25 +21,41 @@ public class BasicShowRequestHandlerTest extends AbstractTestNGSpringContextTest
             {
                 "20556714",
                 "Amy",
-                "Ellington"
+                "Ellington",
+                true,
+                null,
+                null
             },
             {
                 "30713324",
                 "Brian",
-                "McKenzie"
+                "McKenzie",
+                true,
+                null,
+                null
             },
             {
-                "41576881",
+                "55555555",
                 "William",
-                "Ramirez"
+                "Ramirez",
+                false,
+                "ResourceNotFoundException",
+                "No Student exists at id 55555555"
             }
         };
     }
 
     @Test(dataProvider = "showStudentCases")
-    public void testShowStudent(String id, String expFirstName, String expLastName) {
-        Student student = handler.prepare(id).handleRequest();
-        Assert.assertEquals(student.getFirstName(), expFirstName);
-        Assert.assertEquals(student.getLastName(), expLastName);
+    public void testShowStudent(String id, String expFirstName, String expLastName, boolean expSuccess, String expException, String expMessage) {
+        try {
+            Student student = handler.prepare(id).handleRequest();
+            Assert.assertTrue(expSuccess);
+            Assert.assertEquals(student.getFirstName(), expFirstName);
+            Assert.assertEquals(student.getLastName(), expLastName);
+        } catch (Exception ex) {
+            Assert.assertFalse(expSuccess);
+            Assert.assertEquals(ex.getClass().getSimpleName(), expException);
+            Assert.assertEquals(ex.getMessage(), expMessage);
+        }
     }
 }

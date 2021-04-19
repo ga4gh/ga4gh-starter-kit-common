@@ -2,6 +2,7 @@ package org.ga4gh.starterkit.common.requesthandler;
 
 import java.io.Serializable;
 
+import org.ga4gh.starterkit.common.exception.ResourceNotFoundException;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
 import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
 
@@ -21,7 +22,11 @@ public class BasicShowRequestHandler<I extends Serializable, T extends Hibernate
     }
 
     public T handleRequest() {
-        return hibernateUtil.readEntityObject(entityClass, id, true);
+        T object = hibernateUtil.readEntityObject(entityClass, id, true);
+        if (object == null) {
+            throw new ResourceNotFoundException("No " + entityClass.getSimpleName() + " exists at id " + id);
+        }
+        return object;
     }
 
     public void setHibernateUtil(HibernateUtil hibernateUtil) {

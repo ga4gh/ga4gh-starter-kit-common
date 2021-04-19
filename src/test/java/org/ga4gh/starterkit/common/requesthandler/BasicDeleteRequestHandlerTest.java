@@ -1,67 +1,68 @@
 package org.ga4gh.starterkit.common.requesthandler;
 
 import javax.annotation.Resource;
+
+import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
+import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
 import org.ga4gh.starterkit.common.testutil.Student;
 import org.ga4gh.starterkit.common.testutil.TestSpringConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @ContextConfiguration(classes = {TestSpringConfig.class})
 public class BasicDeleteRequestHandlerTest extends AbstractTestNGSpringContextTests {
 
-    @Resource
-    BasicShowRequestHandler<String, Student> showHandler;
-
-    @Resource
-    BasicCreateRequestHandler<String, Student> createHandler;
+    @Autowired
+    HibernateUtil hibernateUtil;
 
     @Resource
     BasicDeleteRequestHandler<String, Student> deleteHandler;
+
+    @BeforeClass
+    public void setup() throws EntityExistsException {
+        hibernateUtil.createEntityObject(Student.class, new Student("92035326", "Daisy", "Hudson"));
+        hibernateUtil.createEntityObject(Student.class, new Student("15841564", "Nettie", "Lucas"));
+    }
 
     @DataProvider(name = "deleteStudentCases")
     public Object[][] deleteStudentCases() {
         return new Object[][] {
             {
-                new Student(
-                    "92035326",
-                    "Daisy",
-                    "Hudson"
-                )
+                "92035326",
+                true,
+                null,
+                null
             },
             {
-                new Student(
-                    "15841564",
-                    "Nettie",
-                    "Lucas"
-                )
+                "15841564",
+                true,
+                null,
+                null
             },
             {
-                new Student(
-                    "54229099",
-                    "Gordon",
-                    "Mathis"
-                )
+                "54229099",
+                false,
+                "ConflictException",
+                "No Student at id 54229099"
             }
         };
     }
 
     @Test(dataProvider = "deleteStudentCases")
-    public void testDeleteStudent(Student newStudent) {
-        // assert no student exists yet
-        Student savedStudent = showHandler.prepare(newStudent.getId()).handleRequest();
-        Assert.assertNull(savedStudent);
-
-        // create the student and assert not null
-        savedStudent = createHandler.prepare(newStudent).handleRequest();
-        Assert.assertNotNull(savedStudent);
-
-        // delete the student and assert it no longer exists
-        savedStudent = deleteHandler.prepare(newStudent.getId()).handleRequest();
-        Assert.assertNull(savedStudent);
-        savedStudent = showHandler.prepare(newStudent.getId()).handleRequest();
-        Assert.assertNull(savedStudent);
+    public void testDeleteStudent(String id, boolean expSuccess, String expException, String expMessage) {
+        try {
+            Student savedStudent = deleteHandler.prepare(id).handleRequest();
+            Assert.assertTrue(expSuccess);
+            Assert.assertNull(savedStudent);
+        } catch (Exception ex) {
+            Assert.assertFalse(expSuccess);
+            Assert.assertEquals(ex.getClass().getSimpleName(), expException);
+            Assert.assertEquals(ex.getMessage(), expMessage);
+        }
     }
 }
