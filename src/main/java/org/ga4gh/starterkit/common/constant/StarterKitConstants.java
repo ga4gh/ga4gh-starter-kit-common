@@ -4,6 +4,7 @@ public class StarterKitConstants {
 
 
     public static final String GA4GH = "ga4gh";
+    public static final String ADMIN = "admin";
 
     // API path constants: service/specification name
 

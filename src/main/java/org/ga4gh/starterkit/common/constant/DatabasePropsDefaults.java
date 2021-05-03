@@ -1,6 +1,6 @@
-package org.ga4gh.starterkit.common.hibernate;
+package org.ga4gh.starterkit.common.constant;
 
-public class HibernatePropsDefaults {
+public class DatabasePropsDefaults {
 
     public static final String DRIVER_CLASS_NAME = "org.sqlite.JDBC";
     public static final String URL = "jdbc:sqlite:./ga4gh-starter-kit.dev.db";

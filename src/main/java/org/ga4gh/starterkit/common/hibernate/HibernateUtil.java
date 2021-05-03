@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityMismatchException;
+import org.ga4gh.starterkit.common.config.DatabaseProps;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityDoesntExistException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -14,7 +15,7 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
 
     private boolean configured;
-    private HibernateProps hibernateProps;
+    private DatabaseProps databaseProps;
     private List<Class<? extends HibernateEntity<? extends Serializable>>> annotatedClasses;
     private SessionFactory sessionFactory;
     
@@ -27,7 +28,7 @@ public class HibernateUtil {
         
         try {
             Configuration configuration = new Configuration();
-            configuration.setProperties(getHibernateProps().getAllProperties());
+            configuration.setProperties(getDatabaseProps().getAllProperties());
             for (Class<? extends HibernateEntity<? extends Serializable>> annotatedClass : getAnnotatedClasses()) {
                 configuration.addAnnotatedClass(annotatedClass);
             }
@@ -155,12 +156,12 @@ public class HibernateUtil {
         return configured;
     }
 
-    public void setHibernateProps(HibernateProps hibernateProps) {
-        this.hibernateProps = hibernateProps;
+    public void setDatabaseProps(DatabaseProps databaseProps) {
+        this.databaseProps = databaseProps;
     }
 
-    public HibernateProps getHibernateProps() {
-        return hibernateProps;
+    public DatabaseProps getDatabaseProps() {
+        return databaseProps;
     }
 
     public void setAnnotatedClasses(List<Class<? extends HibernateEntity<? extends Serializable>>> annotatedClasses) {
