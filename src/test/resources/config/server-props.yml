@@ -1,0 +1,3 @@
+scheme: https
+hostname: myservice.ga4gh.org
+port: 4000

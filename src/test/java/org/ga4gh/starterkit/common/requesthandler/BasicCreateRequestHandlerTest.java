@@ -76,6 +76,16 @@ public class BasicCreateRequestHandlerTest extends AbstractTestNGSpringContextTe
             },
             {
                 new Student(
+                    null,
+                    "Norman",
+                    "Grant"
+                ),
+                false,
+                "IllegalArgumentException",
+                "id to load is required for loading"
+            },
+            {
+                new Student(
                     "45850321",
                     "Jacquelyn",
                     "Green"

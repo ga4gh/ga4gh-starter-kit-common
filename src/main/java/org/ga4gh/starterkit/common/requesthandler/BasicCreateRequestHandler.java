@@ -29,7 +29,6 @@ public class BasicCreateRequestHandler<I extends Serializable, T extends Hiberna
         } catch (EntityExistsException ex) {
             throw new ConflictException(ex.getMessage());
         }
-        
     }
 
     public void setHibernateUtil(HibernateUtil hibernateUtil) {

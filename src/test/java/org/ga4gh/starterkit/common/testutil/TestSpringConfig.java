@@ -3,8 +3,8 @@ package org.ga4gh.starterkit.common.testutil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.ga4gh.starterkit.common.config.DatabaseProps;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
-import org.ga4gh.starterkit.common.hibernate.HibernateProps;
 import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
 import org.ga4gh.starterkit.common.requesthandler.BasicCreateRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicDeleteRequestHandler;
@@ -29,18 +29,18 @@ public class TestSpringConfig {
     }
 
     @Bean
-    public HibernateProps getTestHibernateProps() {
-        return new HibernateProps();
+    public DatabaseProps getTestDatabaseProps() {
+        return new DatabaseProps();
     }
 
     @Bean
     public HibernateUtil getTestHibernateUtil(
         @Autowired List<Class<? extends HibernateEntity<? extends Serializable>>> annotatedClasses,
-        @Autowired HibernateProps hibernateProps
+        @Autowired DatabaseProps databaseProps
     ) {
         HibernateUtil hibernateUtil = new HibernateUtil();
         hibernateUtil.setAnnotatedClasses(annotatedClasses);
-        hibernateUtil.setHibernateProps(hibernateProps);
+        hibernateUtil.setDatabaseProps(databaseProps);
         return hibernateUtil;
     }
 

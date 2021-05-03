@@ -1,8 +1,18 @@
-package org.ga4gh.starterkit.common.hibernate;
+package org.ga4gh.starterkit.common.config;
 
 import java.util.Properties;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.DRIVER_CLASS_NAME;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.URL;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.USERNAME;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.PASSWORD;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.POOL_SIZE;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.DIALECT;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.HBM2DDL_AUTO;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.SHOW_SQL;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.CURRENT_SESSION_CONTEXT_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.DATE_CLASS;
 
-public class HibernateProps {
+public class DatabaseProps {
 
     private String driverClassName;
     private String url;
@@ -15,7 +25,7 @@ public class HibernateProps {
     private String currentSessionContextClass;
     private String dateClass;
 
-    public HibernateProps() {
+    public DatabaseProps() {
         setAllDefaults();
     }
 
@@ -130,15 +140,15 @@ public class HibernateProps {
     }
 
     private void setAllDefaults() {
-        setDriverClassName(HibernatePropsDefaults.DRIVER_CLASS_NAME);
-        setUrl(HibernatePropsDefaults.URL);
-        setUsername(HibernatePropsDefaults.USERNAME);
-        setPassword(HibernatePropsDefaults.PASSWORD);
-        setPoolSize(HibernatePropsDefaults.POOL_SIZE);
-        setDialect(HibernatePropsDefaults.DIALECT);
-        setHbm2ddlAuto(HibernatePropsDefaults.HBM2DDL_AUTO);
-        setShowSQL(HibernatePropsDefaults.SHOW_SQL);
-        setCurrentSessionContextClass(HibernatePropsDefaults.CURRENT_SESSION_CONTEXT_CLASS);
-        setDateClass(HibernatePropsDefaults.DATE_CLASS);
+        setDriverClassName(DRIVER_CLASS_NAME);
+        setUrl(URL);
+        setUsername(USERNAME);
+        setPassword(PASSWORD);
+        setPoolSize(POOL_SIZE);
+        setDialect(DIALECT);
+        setHbm2ddlAuto(HBM2DDL_AUTO);
+        setShowSQL(SHOW_SQL);
+        setCurrentSessionContextClass(CURRENT_SESSION_CONTEXT_CLASS);
+        setDateClass(DATE_CLASS);
     }
 }
