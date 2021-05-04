@@ -24,7 +24,16 @@ public class DeepObjectMerger {
     public static void merge(Object source, Object target) {
         // Through reflection, get all fields associated with object to be merged
         Class<?> objectClass = source.getClass();
-        Field[] fields = objectClass.getDeclaredFields();
+        List<Field> fields = new ArrayList<>(Arrays.asList(objectClass.getDeclaredFields()));
+
+        // Traverse the class's super classes until there are no more
+        // super classes in order to merge properties defined in the super
+        Class<?> superClass = objectClass.getSuperclass();
+        while (superClass != null) {
+            List<Field> superClassFields = new ArrayList<>(Arrays.asList(superClass.getDeclaredFields()));
+            fields.addAll(superClassFields);
+            superClass = superClass.getSuperclass();
+        }
 
         for (Field field : fields) {
             // Get field and set as accessible so it can be written
