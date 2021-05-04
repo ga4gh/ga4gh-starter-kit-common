@@ -33,6 +33,13 @@ public class DeepObjectMergerTest {
         }
     }
 
+    private static class SimpleChild extends Simple {
+
+        public SimpleChild(String s, LocalDateTime dt, boolean b) {
+            super(s, dt, b);
+        }
+    }
+
     private static class Complex {
         private Simple s;
 
@@ -131,5 +138,20 @@ public class DeepObjectMergerTest {
 
         Assert.assertEquals(target.getStrings().get(0), "c");
         Assert.assertEquals(target.getStrings().get(1), "d");
+    }
+
+    @Test
+    public void testParentClassPropsCopied() {
+
+        LocalDateTime dt = LocalDateTime.now();
+
+        SimpleChild target = new SimpleChild("s", null, false);
+        SimpleChild source = new SimpleChild("t", dt, true);
+
+        DeepObjectMerger.merge(source, target);
+
+        Assert.assertEquals(target.getS(), "t");
+        Assert.assertEquals(target.getDt(), dt);
+        Assert.assertTrue(target.isB());
     }
 }
