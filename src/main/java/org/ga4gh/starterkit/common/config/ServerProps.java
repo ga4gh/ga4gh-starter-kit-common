@@ -2,7 +2,8 @@ package org.ga4gh.starterkit.common.config;
 
 import static org.ga4gh.starterkit.common.constant.ServerPropsDefaults.SCHEME;
 import static org.ga4gh.starterkit.common.constant.ServerPropsDefaults.HOSTNAME;
-import static org.ga4gh.starterkit.common.constant.ServerPropsDefaults.PORT;
+import static org.ga4gh.starterkit.common.constant.ServerPropsDefaults.PUBLIC_API_PORT;
+import static org.ga4gh.starterkit.common.constant.ServerPropsDefaults.ADMIN_API_PORT;
 
 public class ServerProps {
 
@@ -10,7 +11,9 @@ public class ServerProps {
 
     private String hostname;
 
-    private String port;
+    private String publicApiPort;
+
+    private String adminApiPort;
 
     public ServerProps() {
         setAllDefaults();
@@ -32,17 +35,26 @@ public class ServerProps {
         return hostname;
     }
 
-    public void setPort(String port) {
-        this.port = port;
+    public void setPublicApiPort(String publicApiPort) {
+        this.publicApiPort = publicApiPort;
     }
 
-    public String getPort() {
-        return port;
+    public String getPublicApiPort() {
+        return publicApiPort;
+    }
+
+    public void setAdminApiPort(String adminApiPort) {
+        this.adminApiPort = adminApiPort;
+    }
+
+    public String getAdminApiPort() {
+        return adminApiPort;
     }
 
     private void setAllDefaults() {
-        this.setScheme(SCHEME);
-        this.setHostname(HOSTNAME);
-        this.setPort(PORT);
+        setScheme(SCHEME);
+        setHostname(HOSTNAME);
+        setPublicApiPort(PUBLIC_API_PORT);
+        setAdminApiPort(ADMIN_API_PORT);
     }
 }

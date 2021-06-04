@@ -73,7 +73,7 @@ jar {
 }
 
 bootJar {
-    enabled = false
+    mainClassName = 'org.ga4gh.starterkit.common.demo.DemoServer'
 }
 
 test {
