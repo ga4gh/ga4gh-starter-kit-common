@@ -1,29 +1,25 @@
 package org.ga4gh.starterkit.common.config;
 
 import java.util.Properties;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.DRIVER_CLASS_NAME;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.URL;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.USERNAME;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.PASSWORD;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.POOL_SIZE;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.DIALECT;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.HBM2DDL_AUTO;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.SHOW_SQL;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.CURRENT_SESSION_CONTEXT_CLASS;
-import static org.ga4gh.starterkit.common.constant.DatabasePropsDefaults.DATE_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.DEFAULT_URL;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.DEFAULT_USERNAME;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.DEFAULT_PASSWORD;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.DEFAULT_POOL_SIZE;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.DEFAULT_SHOW_SQL;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.DEFAULT_CURRENT_SESSION_CONTEXT_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.SQLITE_DRIVER_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.SQLITE_DIALECT;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.SQLITE_DATE_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.POSTGRES_DRIVER_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.POSTGRES_DIALECT;
 
 public class DatabaseProps {
 
-    private String driverClassName;
     private String url;
     private String username;
     private String password;
     private String poolSize;
-    private String dialect;
-    private String hbm2ddlAuto;
     private String showSQL;
-    private String currentSessionContextClass;
-    private String dateClass;
 
     public DatabaseProps() {
         setAllDefaults();
@@ -31,7 +27,9 @@ public class DatabaseProps {
 
     public Properties getAllProperties() {
         Properties props = new Properties();
-        props.setProperty("hibernate.connection.driver_class", getDriverClassName());
+
+        // set common properties across any db type: url, username, password,
+        // pool_size, show_sql, 
         props.setProperty("hibernate.connection.url", getUrl());
 
         if (!getUsername().equals("")) {
@@ -43,29 +41,51 @@ public class DatabaseProps {
         }
 
         props.setProperty("hibernate.connection.pool_size", getPoolSize());
-        props.setProperty("hibernate.dialect", getDialect());
-
-        if (!getHbm2ddlAuto().equals("")) {
-            props.setProperty("hibernate.hbm2ddl.auto", getHbm2ddlAuto());
-        }
-
         props.setProperty("hibernate.show_sql", getShowSQL());
-        props.setProperty("hibernate.current_session_context_class", getCurrentSessionContextClass());
 
-        if (!getDateClass().equals("")) {
-            props.setProperty("hibernate.connection.date_class", getDateClass());
+        // set hardcoded properties: current_session_context_class
+        props.setProperty("hibernate.current_session_context_class", DEFAULT_CURRENT_SESSION_CONTEXT_CLASS);
+        
+        // infer database type (ie sqlite or postgresql) from the db connection url
+        DatabaseType dbtype = getDatabaseTypeFromUrl(getUrl());
+
+        switch(dbtype) {
+            case sqlite:
+                assignSqliteProperties(props);
+                break;
+            case postgres:
+                assignPostgresProperties(props);
+                break;
         }
 
         return props;
     }
 
-    public void setDriverClassName(String driverClassName) {
-        this.driverClassName = driverClassName;
+    private DatabaseType getDatabaseTypeFromUrl(String url) {
+
+        if (url.startsWith("jdbc:sqlite")) {
+            return DatabaseType.sqlite;
+        }
+
+        if (url.startsWith("jdbc:postgresql")) {
+            return DatabaseType.postgres;
+        }
+        
+        throw new IllegalArgumentException("Invalid JDBC URL: MUST be a valid 'sqlite' or 'postgresql' JDBC URL");
     }
 
-    public String getDriverClassName() {
-        return driverClassName;
+    private void assignSqliteProperties(Properties props) {
+        props.setProperty("hibernate.connection.driver_class", SQLITE_DRIVER_CLASS);
+        props.setProperty("hibernate.dialect", SQLITE_DIALECT);
+        props.setProperty("hibernate.connection.date_class", SQLITE_DATE_CLASS);
     }
+
+    private void assignPostgresProperties(Properties props) {
+        props.setProperty("hibernate.connection.driver_class", POSTGRES_DRIVER_CLASS);
+        props.setProperty("hibernate.dialect", POSTGRES_DIALECT);
+    }
+    
+    /* Setters and getters */
 
     public void setUrl(String url) {
         this.url = url;
@@ -99,22 +119,6 @@ public class DatabaseProps {
         return poolSize;
     }
 
-    public void setDialect(String dialect) {
-        this.dialect = dialect;
-    }
-
-    public String getDialect() {
-        return dialect;
-    }
-
-    public void setHbm2ddlAuto(String hbm2ddlAuto) {
-        this.hbm2ddlAuto = hbm2ddlAuto;
-    }
-
-    public String getHbm2ddlAuto() {
-        return hbm2ddlAuto;
-    }
-
     public void setShowSQL(String showSQL) {
         this.showSQL = showSQL;
     }
@@ -123,32 +127,11 @@ public class DatabaseProps {
         return showSQL;
     }
 
-    public void setCurrentSessionContextClass(String currentSessionContextClass)  {
-        this.currentSessionContextClass = currentSessionContextClass;
-    }
-
-    public String getCurrentSessionContextClass() {
-        return currentSessionContextClass;
-    }
-
-    public void setDateClass(String dateClass) {
-        this.dateClass = dateClass;
-    }
-
-    public String getDateClass() {
-        return dateClass;
-    }
-
     private void setAllDefaults() {
-        setDriverClassName(DRIVER_CLASS_NAME);
-        setUrl(URL);
-        setUsername(USERNAME);
-        setPassword(PASSWORD);
-        setPoolSize(POOL_SIZE);
-        setDialect(DIALECT);
-        setHbm2ddlAuto(HBM2DDL_AUTO);
-        setShowSQL(SHOW_SQL);
-        setCurrentSessionContextClass(CURRENT_SESSION_CONTEXT_CLASS);
-        setDateClass(DATE_CLASS);
+        setUrl(DEFAULT_URL);
+        setUsername(DEFAULT_USERNAME);
+        setPassword(DEFAULT_PASSWORD);
+        setPoolSize(DEFAULT_POOL_SIZE);
+        setShowSQL(DEFAULT_SHOW_SQL);
     }
 }
