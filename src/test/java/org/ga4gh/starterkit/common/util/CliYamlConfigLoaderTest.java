@@ -49,7 +49,7 @@ public class CliYamlConfigLoaderTest {
     private void serverPropsAssertions(ServerProps serverProps, String[] expArgs) {
         Assert.assertEquals(serverProps.getScheme(), expArgs[0]);
         Assert.assertEquals(serverProps.getHostname(), expArgs[1]);
-        Assert.assertEquals(serverProps.getPort(), expArgs[2]);
+        Assert.assertEquals(serverProps.getPublicApiPort(), expArgs[2]);
     }
 
     private void databasePropsAssertions(DatabaseProps databaseProps, String[] expArgs) {
