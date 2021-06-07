@@ -26,5 +26,4 @@ public class DemoYamlConfigTest {
         Assert.assertEquals(config.getDatabaseProps().getUsername(), "");
         Assert.assertEquals(config.getDatabaseProps().getPassword(), "");
     }
-    
 }
