@@ -8,7 +8,10 @@
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
 }
 
@@ -23,18 +26,22 @@ plugins {
     // Apply the plugin to add support for jacoco test coverage report
     id 'jacoco'
 
+    id 'maven-publish'
+    id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
 }
 
-archivesBaseName = 'ga4gh-starter-kit-common'
 group 'org.ga4gh'
 version '0.4.0'
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
     mavenCentral()
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 dependencies {
@@ -71,11 +78,50 @@ test {
     useTestNG()
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+task sourceJar(type: Jar) {
+  from sourceSets.main.allJava
+  archiveClassifier = "sources"
+}
+
+publishing {
+  publications {
+    myPublication(MavenPublication) {
+      from components.java
+      // artifact sourceJar
+      pom {
+        name = "ga4gh-starter-kit-common"
+        description = "Common utils library for GA4GH Starter Kit web services"
+        url = "https://github.com/ga4gh/ga4gh-starter-kit-common"
+        licenses {
+          license {
+            name = "The Apache License, Version 2.0"
+            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
         }
+        developers {
+          developer {
+            id = "jb-adams"
+            name = "Jeremy Adams"
+            email = "jeremy.adams@ga4gh.org"
+          }
+        }
+        scm {
+          connection = "scm:https://github.com/ga4gh/ga4gh-starter-kit-common.git"
+          developerConnection = "scm:git://github.com/ga4gh/ga4gh-starter-kit-common.git"
+          url = "https://github.com/ga4gh/ga4gh-starter-kit-common"
+        }
+      }
+    }
+  }
+}
+
+signing {
+    sign publishing.publications.myPublication
+}
+
+nexusPublishing {
+    packageGroup = "org.ga4gh"
+    repositories {
+        sonatype()
     }
 }
