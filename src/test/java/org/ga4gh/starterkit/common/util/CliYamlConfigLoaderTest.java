@@ -3,16 +3,13 @@ package org.ga4gh.starterkit.common.util;
 import org.apache.commons.cli.Options;
 import org.ga4gh.starterkit.common.config.DatabaseProps;
 import org.ga4gh.starterkit.common.config.ServerProps;
-import org.junit.runner.RunWith;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class CliYamlConfigLoaderTest {
 
