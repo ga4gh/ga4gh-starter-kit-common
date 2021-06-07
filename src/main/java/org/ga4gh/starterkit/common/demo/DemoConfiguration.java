@@ -1,6 +1,7 @@
 package org.ga4gh.starterkit.common.demo;
 
 import org.apache.catalina.connector.Connector;
+import org.apache.commons.cli.Options;
 import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsConnector;
 import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsFilter;
 import org.ga4gh.starterkit.common.util.webserver.TomcatMultiConnectorServletWebServerFactoryCustomizer;
@@ -17,6 +18,13 @@ public class DemoConfiguration implements WebMvcConfigurer {
 
     @Value("${server.admin.port:4501}")
     private String serverAdminPort;
+
+    @Bean
+    public Options getCommandLineOptions() {
+        final Options options = new Options();
+        options.addOption("c", "config", true, "Path to DRS YAML config file");
+        return options;
+    }
 
     @Bean
     public WebServerFactoryCustomizer servletContainer() {

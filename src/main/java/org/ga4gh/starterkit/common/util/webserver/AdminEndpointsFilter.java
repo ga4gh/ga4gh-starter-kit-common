@@ -13,7 +13,6 @@ import static org.ga4gh.starterkit.common.constant.StarterKitConstants.ADMIN;
 
 public class AdminEndpointsFilter implements Filter {
 
-    private static final String ADMIN_PATH_PREFIX = "/" + ADMIN;
     private int adminPort;
 
     public AdminEndpointsFilter(int adminPort) {
@@ -52,6 +51,6 @@ public class AdminEndpointsFilter implements Filter {
     }
 
     private boolean isRequestForAdminEndpoint(ServletRequest servletRequest) {
-        return ((RequestFacade) servletRequest).getRequestURI().startsWith(ADMIN_PATH_PREFIX);
+        return ((RequestFacade) servletRequest).getRequestURI().contains(ADMIN);
     }
 }

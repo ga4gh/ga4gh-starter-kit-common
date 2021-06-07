@@ -1,7 +1,7 @@
 package org.ga4gh.starterkit.common.demo;
 
-import java.util.Properties;
-
+import org.apache.commons.cli.Options;
+import org.ga4gh.starterkit.common.util.webserver.PortPropertySetter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,9 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoServer {
 
     public static void main(String[] args) {
-        Properties systemProperties = System.getProperties();
-        systemProperties.setProperty("server.port", "6868");
-        systemProperties.setProperty("server.admin.port", "8686");
-        SpringApplication.run(DemoServer.class, args);
+        boolean setupSuccess = setup(args);
+        if (setupSuccess) {
+            SpringApplication.run(DemoServer.class, args);
+        } else {
+            System.out.println("Setup failure, exiting");
+        }
+    }
+
+    private static boolean setup(String[] args) {
+        Options options = new DemoConfiguration().getCommandLineOptions();
+        return PortPropertySetter.setPortProperties(DemoYamlConfigContainer.class, args, options, "config");
     }
 }
