@@ -37,3 +37,8 @@ docker-build: jar-build
 .PHONY: docker-publish
 docker-publish:
 	docker image push ${DOCKER_IMG}
+
+# publish artifact to maven central repository
+.PHONY: sonatype-publish
+sonatype-publish:
+	@./gradlew publishToSonatype
