@@ -3,6 +3,7 @@ package org.ga4gh.starterkit.common.util;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.*;
+import org.ga4gh.starterkit.common.config.LogLevel;
 
 public class DeepObjectMerger {
 
@@ -18,7 +19,8 @@ public class DeepObjectMerger {
         int.class,
         long.class,
         float.class,
-        double.class
+        double.class,
+        LogLevel.class
     ));
 
     public static void merge(Object source, Object target) {
