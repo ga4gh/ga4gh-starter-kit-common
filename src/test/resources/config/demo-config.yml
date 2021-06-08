@@ -4,3 +4,6 @@ starterKitDemo:
     hostname: localhost:7000
     publicApiPort: 7000
     adminApiPort: 7001
+    logLevel: WARN
+    logFile: ./starter-kit.log
+    disableSpringLogging: true

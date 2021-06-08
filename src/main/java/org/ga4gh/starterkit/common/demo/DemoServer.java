@@ -1,7 +1,7 @@
 package org.ga4gh.starterkit.common.demo;
 
 import org.apache.commons.cli.Options;
-import org.ga4gh.starterkit.common.util.webserver.PortPropertySetter;
+import org.ga4gh.starterkit.common.util.webserver.ServerPropertySetter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -19,6 +19,6 @@ public class DemoServer {
 
     private static boolean setup(String[] args) {
         Options options = new DemoConfiguration().getCommandLineOptions();
-        return PortPropertySetter.setPortProperties(DemoYamlConfigContainer.class, args, options, "config");
+        return ServerPropertySetter.setPortProperties(DemoYamlConfigContainer.class, args, options, "config");
     }
 }
