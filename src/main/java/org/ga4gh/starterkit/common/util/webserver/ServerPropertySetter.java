@@ -11,7 +11,7 @@ import org.springframework.boot.DefaultApplicationArguments;
 
 public class ServerPropertySetter {
 
-    public static <T extends ContainsServerProps> boolean setPortProperties(Class<T> configClass, String[] args, Options options, String optionName) {
+    public static <T extends ContainsServerProps> boolean setServerProperties(Class<T> configClass, String[] args, Options options, String optionName) {
         try {
             // obtain the final merged configuration object
             ApplicationArguments applicationArgs = new DefaultApplicationArguments(args);

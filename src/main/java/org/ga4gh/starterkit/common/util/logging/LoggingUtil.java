@@ -1,8 +1,6 @@
 package org.ga4gh.starterkit.common.util.logging;
 
 import javax.annotation.PostConstruct;
-
-import org.ga4gh.starterkit.common.config.LogLevel;
 import org.ga4gh.starterkit.common.config.ServerProps;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
@@ -51,7 +49,7 @@ public class LoggingUtil {
 
     @PostConstruct
     public void buildLogger() {
-        logger = (Logger)LoggerFactory.getLogger(getClass());
+        setLogger((Logger)LoggerFactory.getLogger(getClass()));
         
         LoggerContext loggerContext = logger.getLoggerContext();
         loggerContext.reset();
@@ -61,19 +59,19 @@ public class LoggingUtil {
         encoder.setPattern(MESSAGE_FORMAT);
         encoder.start();
 
-        if (serverProps.getLogFile() == null) {
+        if (getServerProps().getLogFile() == null) {
             ConsoleAppender<ILoggingEvent> appender = new ConsoleAppender<>();
             appender.setContext(loggerContext);
             appender.setEncoder(encoder);
             appender.start();
-            logger.addAppender(appender);
+            getLogger().addAppender(appender);
         } else {
             FileAppender<ILoggingEvent> appender = new FileAppender<>();
             appender.setContext(loggerContext);
             appender.setFile(serverProps.getLogFile());
             appender.setEncoder(encoder);
             appender.start();
-            logger.addAppender(appender);
+            getLogger().addAppender(appender);
         }
 
         setLogLevel();
@@ -103,7 +101,7 @@ public class LoggingUtil {
                 level = Level.DEBUG;
                 break;
         }
-        logger.setLevel(level);
+        getLogger().setLevel(level);
     }
 
     public void setServerProps(ServerProps serverProps) {
