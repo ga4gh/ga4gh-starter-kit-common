@@ -10,7 +10,7 @@ git:
   depth: false
 env:
   global:
-    - DOCKER_IMG_VER=0.5.0
+    - DOCKER_IMG_VER=0.5.1
 language: java
 jdk: oraclejdk11
 services:
