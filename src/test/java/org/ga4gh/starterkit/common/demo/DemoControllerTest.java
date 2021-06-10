@@ -27,7 +27,7 @@ public class DemoControllerTest extends AbstractTestNGSpringContextTests {
         mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
-    @DataProvider(name = "cases")
+    @DataProvider(name = "helloWorld")
     public Object[][] getData() {
         return new Object[][] {
             {
@@ -41,10 +41,18 @@ public class DemoControllerTest extends AbstractTestNGSpringContextTests {
         };
     }
 
-    @Test(dataProvider = "cases")
-    public void testDemoControllers(String requestPath, String expResponseBody) throws Exception {
+    @Test(dataProvider = "helloWorld")
+    public void testDemoHelloWorldControllers(String requestPath, String expResponseBody) throws Exception {
         MvcResult result = mockMvc.perform(get(requestPath)).andExpect(status().isOk()).andReturn();
         String responseBody = result.getResponse().getContentAsString();
+        Assert.assertEquals(responseBody, expResponseBody);
+    }
+
+    @Test
+    public void testDemoServiceInfoController() throws Exception {
+        MvcResult result = mockMvc.perform(get("/service-info")).andExpect(status().isOk()).andReturn();
+        String responseBody = result.getResponse().getContentAsString();
+        String expResponseBody = "{\"id\":\"org.ga4gh.starterkit.common.demo\",\"name\":\"Starter Kit Commons Lib Demo Service\",\"description\":\"A generic service-info endpoint and model from the starter kit commons library\",\"contactUrl\":\"mailto:info@ga4gh.org\",\"documentationUrl\":\"https://ga4gh.org\",\"createdAt\":\"2021-06-10T12:00:00Z\",\"updatedAt\":\"2021-06-10T12:00:00Z\",\"environment\":\"demo\",\"version\":\"1.0.0\",\"type\":{\"group\":\"org.ga4gh\",\"artifact\":\"demo\",\"version\":\"1.0.0\"},\"organization\":{\"name\":\"Global Alliance for Genomics and Health\",\"url\":\"https://ga4gh.org\"}}";
         Assert.assertEquals(responseBody, expResponseBody);
     }
 }

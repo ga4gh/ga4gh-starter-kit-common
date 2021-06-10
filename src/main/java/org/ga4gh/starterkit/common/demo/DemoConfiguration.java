@@ -3,6 +3,7 @@ package org.ga4gh.starterkit.common.demo;
 import org.apache.catalina.connector.Connector;
 import org.apache.commons.cli.Options;
 import org.ga4gh.starterkit.common.config.ServerProps;
+import org.ga4gh.starterkit.common.model.ServiceInfo;
 import org.ga4gh.starterkit.common.util.CliYamlConfigLoader;
 import org.ga4gh.starterkit.common.util.DeepObjectMerger;
 import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
@@ -24,8 +25,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class DemoConfiguration implements WebMvcConfigurer {
 
+    /* ******************************
+     * TOMCAT SERVER
+     * ****************************** */
+
     @Value("${server.admin.port:4501}")
     private String serverAdminPort;
+
+    @Bean
+    public WebServerFactoryCustomizer servletContainer() {
+        Connector[] additionalConnectors = AdminEndpointsConnector.additionalConnector(serverAdminPort);
+        ServerProperties serverProperties = new ServerProperties();
+        return new TomcatMultiConnectorServletWebServerFactoryCustomizer(serverProperties, additionalConnectors);
+    }
+
+    @Bean
+    public FilterRegistrationBean<AdminEndpointsFilter> adminEndpointsFilter() {
+        return new FilterRegistrationBean<AdminEndpointsFilter>(new AdminEndpointsFilter(Integer.valueOf(serverAdminPort)));
+    }
+
+    /* ******************************
+     * YAML CONFIG
+     * ****************************** */
 
     @Bean
     public Options getCommandLineOptions() {
@@ -81,16 +102,15 @@ public class DemoConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public WebServerFactoryCustomizer servletContainer() {
-        Connector[] additionalConnectors = AdminEndpointsConnector.additionalConnector(serverAdminPort);
-        ServerProperties serverProperties = new ServerProperties();
-        return new TomcatMultiConnectorServletWebServerFactoryCustomizer(serverProperties, additionalConnectors);
+    public ServiceInfo serviceInfo(
+        @Qualifier("finalDemoConfigContainer") DemoYamlConfigContainer finalContainer
+    ) {
+        return finalContainer.getStarterKitDemo().getServiceInfo();
     }
 
-    @Bean
-    public FilterRegistrationBean<AdminEndpointsFilter> adminEndpointsFilter() {
-        return new FilterRegistrationBean<AdminEndpointsFilter>(new AdminEndpointsFilter(Integer.valueOf(serverAdminPort)));
-    }
+    /* ******************************
+     * LOGGING
+     * ****************************** */
 
     @Bean
     public LoggingUtil loggingUtil() {

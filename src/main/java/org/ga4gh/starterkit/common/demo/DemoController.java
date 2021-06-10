@@ -1,5 +1,6 @@
 package org.ga4gh.starterkit.common.demo;
 
+import org.ga4gh.starterkit.common.model.ServiceInfo;
 import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,9 @@ public class DemoController {
     @Autowired
     private LoggingUtil loggingUtil;
 
+    @Autowired
+    private ServiceInfo serviceInfo;
+
     @GetMapping(path = "/hello-world")
     public String helloWorld() {
         demoLogStatements();
@@ -21,6 +25,11 @@ public class DemoController {
     public String adminHelloWorld() {
         demoLogStatements();
         return "Hello, World! You have reached the ADMIN 'hello-world' endpoint";
+    }
+
+    @GetMapping(path = "/service-info")
+    public ServiceInfo getServiceInfo() {
+        return serviceInfo;
     }
 
     private void demoLogStatements() {
