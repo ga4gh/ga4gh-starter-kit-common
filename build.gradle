@@ -32,7 +32,7 @@ plugins {
 }
 
 group 'org.ga4gh'
-version '0.5.1'
+version '0.5.2'
 
 repositories {
     jcenter()
