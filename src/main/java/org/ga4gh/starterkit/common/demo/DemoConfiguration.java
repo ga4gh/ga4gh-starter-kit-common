@@ -1,6 +1,7 @@
 package org.ga4gh.starterkit.common.demo;
 
 import org.apache.catalina.connector.Connector;
+import org.springframework.web.filter.CorsFilter;
 import org.apache.commons.cli.Options;
 import org.ga4gh.starterkit.common.config.ServerProps;
 import org.ga4gh.starterkit.common.model.ServiceInfo;
@@ -9,6 +10,7 @@ import org.ga4gh.starterkit.common.util.DeepObjectMerger;
 import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsConnector;
 import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsFilter;
+import org.ga4gh.starterkit.common.util.webserver.CorsFilterBuilder;
 import org.ga4gh.starterkit.common.util.webserver.TomcatMultiConnectorServletWebServerFactoryCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,9 +22,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableWebMvc
 public class DemoConfiguration implements WebMvcConfigurer {
 
     /* ******************************
@@ -42,6 +46,13 @@ public class DemoConfiguration implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean<AdminEndpointsFilter> adminEndpointsFilter() {
         return new FilterRegistrationBean<AdminEndpointsFilter>(new AdminEndpointsFilter(Integer.valueOf(serverAdminPort)));
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter(
+        @Autowired ServerProps serverProps
+    ) {
+        return new CorsFilterBuilder(serverProps).buildFilter();
     }
 
     /* ******************************

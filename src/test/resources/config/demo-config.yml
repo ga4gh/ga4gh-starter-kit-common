@@ -7,3 +7,9 @@ starterKitDemo:
     logLevel: WARN
     logFile: ./starter-kit.log
     disableSpringLogging: true
+    publicApiCorsAllowedOrigins:
+      - http://some-public-site.com
+      - http://another-public-site.com
+    adminApiCorsAllowedOrigins:
+      - http://some-admin-site.com
+      - http://another-admin-site.com
