@@ -38,8 +38,4 @@ public class CustomExceptionResponse {
     public String getMessage() {
         return message;
     }
-
-    public String getMsg() {
-        return message;
-    }
 }

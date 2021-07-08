@@ -2,7 +2,6 @@ package org.ga4gh.starterkit.common.demo;
 
 import org.ga4gh.starterkit.common.exception.BadRequestException;
 import org.ga4gh.starterkit.common.exception.ConflictException;
-import org.ga4gh.starterkit.common.exception.CustomException;
 import org.ga4gh.starterkit.common.exception.ResourceNotFoundException;
 import org.ga4gh.starterkit.common.model.ServiceInfo;
 import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
