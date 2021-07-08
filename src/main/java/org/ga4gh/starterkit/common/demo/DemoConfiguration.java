@@ -11,6 +11,7 @@ import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsConnector;
 import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsFilter;
 import org.ga4gh.starterkit.common.util.webserver.CorsFilterBuilder;
+import org.ga4gh.starterkit.common.util.webserver.CustomExceptionHandling;
 import org.ga4gh.starterkit.common.util.webserver.TomcatMultiConnectorServletWebServerFactoryCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @Configuration
 @EnableWebMvc
@@ -42,10 +44,20 @@ public class DemoConfiguration implements WebMvcConfigurer {
         ServerProperties serverProperties = new ServerProperties();
         return new TomcatMultiConnectorServletWebServerFactoryCustomizer(serverProperties, additionalConnectors);
     }
-
+    
     @Bean
     public FilterRegistrationBean<AdminEndpointsFilter> adminEndpointsFilter() {
         return new FilterRegistrationBean<AdminEndpointsFilter>(new AdminEndpointsFilter(Integer.valueOf(serverAdminPort)));
+    }
+
+    @Bean
+    public CustomExceptionHandling customExceptionHandling() {
+        return new CustomExceptionHandling();
+    }
+
+    @Bean
+    public DefaultHandlerExceptionResolver defaultHandlerExceptionResolver() {
+        return new DefaultHandlerExceptionResolver();
     }
 
     @Bean
