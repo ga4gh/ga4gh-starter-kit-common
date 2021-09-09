@@ -31,7 +31,7 @@ RUN make sqlite-db-refresh
 # FINAL CONTAINER
 ##################################################
 
-FROM adoptopenjdk/openjdk11:jre-11.0.11_9-alpine
+FROM adoptopenjdk/openjdk12:jre-12.0.2_10-alpine
 
 USER root
 
@@ -44,4 +44,4 @@ COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
-CMD ["java", "-jar", "ga4gh-starter-kit-common.jar"]
+ENTRYPOINT ["java", "-jar", "ga4gh-starter-kit-common.jar"]
