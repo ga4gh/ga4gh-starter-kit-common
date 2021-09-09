@@ -28,7 +28,6 @@ public class DemoServerCorsTest {
     private static final String INVALID_CORS_RESPONSE = "Invalid CORS request";
 
     private static final String DEFAULT_VALID_CORS_HEADER = "http://localhost";
-    private static final String DEFAULT_INVALID_CORS_HEADER = "http://anotherhost";
     private static final String CUSTOM_PUBLIC_VALID_CORS_HEADER = "http://some-public-site.com";
     private static final String CUSTOM_PUBLIC_INVALID_CORS_HEADER = "http://another-admin-site.com";
     private static final String CUSTOM_ADMIN_VALID_CORS_HEADER = "http://some-admin-site.com";
