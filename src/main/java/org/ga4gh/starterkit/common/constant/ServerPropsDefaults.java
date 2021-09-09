@@ -15,7 +15,7 @@ public class ServerPropsDefaults {
     public static final boolean DISABLE_SPRING_LOGGING = false;
 
     public static final List<String> PUBLIC_API_CORS_ALLOWED_ORIGINS = new ArrayList<>() {{
-        add("http://localhost");
+        add("*");
     }};
     public static final List<String> PUBLIC_API_CORS_ALLOWED_METHODS = new ArrayList<>() {{
         add("GET");
@@ -23,10 +23,12 @@ public class ServerPropsDefaults {
         add("PUT");
         add("DELETE");
     }};
-    public static final List<String> PUBLIC_API_CORS_ALLOWED_HEADERS = new ArrayList<>();
+    public static final List<String> PUBLIC_API_CORS_ALLOWED_HEADERS = new ArrayList<>() {{
+        add("*");
+    }};
 
     public static final List<String> ADMIN_API_CORS_ALLOWED_ORIGINS = new ArrayList<>() {{
-        add("http://localhost");
+        add("*");
     }};
     public static final List<String> ADMIN_API_CORS_ALLOWED_METHODS = new ArrayList<>() {{
         add("GET");
@@ -34,5 +36,7 @@ public class ServerPropsDefaults {
         add("PUT");
         add("DELETE");
     }};
-    public static final List<String> ADMIN_API_CORS_ALLOWED_HEADERS = new ArrayList<>();
+    public static final List<String> ADMIN_API_CORS_ALLOWED_HEADERS = new ArrayList<>() {{
+        add("*");
+    }};
 }
