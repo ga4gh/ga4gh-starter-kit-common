@@ -35,7 +35,7 @@ public class DemoServerCorsTest {
     private static final String CUSTOM_ADMIN_INVALID_CORS_HEADER = "http://some-public-site.com";
 
     private static final List<String> DEFAULT_EXP_CORS_HEADER = new ArrayList<String>() {{
-        add("http://localhost");
+        add("*");
     }};
     private static final List<String> CUSTOM_PUBLIC_EXP_CORS_HEADER = new ArrayList<String>() {{
         add("http://some-public-site.com");
@@ -63,14 +63,6 @@ public class DemoServerCorsTest {
                 PUBLIC_RESPONSE,
                 DEFAULT_EXP_CORS_HEADER
             },
-            // DEFAULT SERVER, PUBLIC PORT, INVALID ORIGIN
-            {
-                DEFAULT_PUBLIC_ENDPOINT,
-                DEFAULT_INVALID_CORS_HEADER,
-                FORBIDDEN,
-                INVALID_CORS_RESPONSE,
-                null
-            },
             // DEFAULT SERVER, ADMIN PORT, NO ORIGIN
             {
                 DEFAULT_ADMIN_ENDPOINT,
@@ -86,14 +78,6 @@ public class DemoServerCorsTest {
                 OK,
                 ADMIN_RESPONSE,
                 DEFAULT_EXP_CORS_HEADER
-            },
-            // DEFAULT SERVER, ADMIN PORT, INVALID ORIGIN
-            {
-                DEFAULT_ADMIN_ENDPOINT,
-                DEFAULT_INVALID_CORS_HEADER,
-                FORBIDDEN,
-                INVALID_CORS_RESPONSE,
-                null
             },
             // CUSTOM SERVER, PUBLIC PORT, NO ORIGIN
             {
