@@ -44,4 +44,4 @@ COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
-CMD ["java", "-jar", "ga4gh-starter-kit-common.jar"]
+ENTRYPOINT ["java", "-jar", "ga4gh-starter-kit-common.jar"]
