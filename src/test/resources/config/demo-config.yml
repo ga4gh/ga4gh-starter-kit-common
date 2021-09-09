@@ -1,0 +1,15 @@
+starterKitDemo:
+  serverProps:
+    scheme: http
+    hostname: localhost:7000
+    publicApiPort: 7000
+    adminApiPort: 7001
+    logLevel: WARN
+    logFile: ./starter-kit.log
+    disableSpringLogging: true
+    publicApiCorsAllowedOrigins:
+      - http://some-public-site.com
+      - http://another-public-site.com
+    adminApiCorsAllowedOrigins:
+      - http://some-admin-site.com
+      - http://another-admin-site.com

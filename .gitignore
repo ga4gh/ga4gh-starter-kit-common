@@ -36,6 +36,7 @@ build
 bin
 
 *.db
+gradle.properties
 
 # Exceptions to above ignore rules
 !gradle/wrapper/gradle-wrapper.jar

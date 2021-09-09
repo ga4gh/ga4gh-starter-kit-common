@@ -14,7 +14,7 @@ import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
 
 @Entity
 @Table(name = "student")
-public class Student implements HibernateEntity {
+public class Student implements HibernateEntity<String> {
 
     @Id
     @Column(name = "id")
@@ -38,10 +38,16 @@ public class Student implements HibernateEntity {
 
     }
 
+    public Student(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     /* Setters and Getters */
 
     public void setId(String id) {
-        this.id = id;
+        this.id = (String) id;
     }
 
     public String getId() {
