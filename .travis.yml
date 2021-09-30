@@ -4,7 +4,6 @@ jobs:
       dist: xenial
       language: java
       jdk:
-        - openjdk8
         - openjdk11
       before_script:
         - sqlite3 -version
@@ -22,7 +21,6 @@ jobs:
       dist: xenial
       language: java
       jdk:
-        - openjdk8
         - openjdk11
       services:
         - docker
