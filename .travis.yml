@@ -1,7 +1,6 @@
 jobs:
   include:
     - stage: UnitTest
-      if: commit_message = foobar ## TODO DELETE
       dist: xenial
       language: java
       jdk:
@@ -19,7 +18,6 @@ jobs:
         - bash <(curl -s https://codecov.io/bash)
 
     - stage: DockerIntegrationTest
-      if: commit_message = foobar ## TODO DELETE
       dist: xenial
       language: java
       jdk:
@@ -41,7 +39,7 @@ jobs:
         AND repo = ga4gh/ga4gh-starter-kit-common
         AND branch =~ /^release\/\d+\.\d+\.\d+$/
         AND fork = false
-        AND commit_message =~ /^trigger-release(-github)?$/
+        AND commit_message =~ /^trigger-release(-github)?/
       dist: xenial
       language: java
       jdk:
@@ -56,23 +54,6 @@ jobs:
         - git tag  
       deploy:
         provider: releases
-        # file_glob: true
-        # file:
-        #   - ci/**/*
-        #   - database/**/*
-        #   - gradle/**/*
-        #   - src/**/*
-        #   - .gitattributes
-        #   - .gitignore
-        #   - .travis.yml
-        #   - build.gradle
-        #   - Dockerfile
-        #   - gradlew
-        #   - gradlew.bat
-        #   - LICENSE
-        #   - Makefile
-        #   - README.md
-        #   - settings.gradle
         skip_cleanup: true
         tag_name: $TAG_NAME
         name: $NAME
@@ -88,7 +69,7 @@ jobs:
         AND repo = ga4gh/ga4gh-starter-kit-common
         AND branch =~ /^release\/\d+\.\d+\.\d+$/
         AND fork = false
-        AND commit_message =~ /^trigger-release(-docker)?$/
+        AND commit_message =~ /^trigger-release(-docker)?/
       dist: xenial
       language: java
       jdk:
