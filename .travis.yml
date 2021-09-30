@@ -56,23 +56,23 @@ jobs:
         - git tag  
       deploy:
         provider: releases
-        file_glob: true
-        file:
-          - ci/**/*
-          - database/**/*
-          - gradle/**/*
-          - src/**/*
-          - .gitattributes
-          - .gitignore
-          - .travis.yml
-          - build.gradle
-          - Dockerfile
-          - gradlew
-          - gradlew.bat
-          - LICENSE
-          - Makefile
-          - README.md
-          - settings.gradle
+        # file_glob: true
+        # file:
+        #   - ci/**/*
+        #   - database/**/*
+        #   - gradle/**/*
+        #   - src/**/*
+        #   - .gitattributes
+        #   - .gitignore
+        #   - .travis.yml
+        #   - build.gradle
+        #   - Dockerfile
+        #   - gradlew
+        #   - gradlew.bat
+        #   - LICENSE
+        #   - Makefile
+        #   - README.md
+        #   - settings.gradle
         skip_cleanup: true
         tag_name: $TAG_NAME
         name: $NAME
