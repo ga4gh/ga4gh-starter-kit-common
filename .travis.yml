@@ -33,6 +33,7 @@
 jobs:
   include:
     - stage: test
+      dist: xenial
       env:
         global:
           - DOCKER_IMG_VER=0.5.4
