@@ -1,52 +1,11 @@
-# dist: xenial
-# addons:
-#   apt:
-#     sources:
-#       - travis-ci/sqlite3
-#     packages:
-#       - sqlite3
-#     update: true
-# git:
-#   depth: false
-# env:
-#   global:
-#     - DOCKER_IMG_VER=0.5.4
-# language: java
-# jdk: oraclejdk11
-# services:
-#   - docker
-# before_install:
-#   - docker pull ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
-#   - docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
-#   - docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER} --config ./src/test/resources/config/demo-config.yml
-# before_script:
-#   - sqlite3 -version
-#   - make -version
-#   - make clean-sqlite
-#   - make sqlite-db-build
-#   - make sqlite-db-populate
-# script: "./gradlew test"
-# after_success:
-#   - "./gradlew jacocoTestReport"
-#   - bash <(curl -s https://codecov.io/bash)
-
 jobs:
   include:
-    - stage: test
+    - stage: UnitTest
       dist: xenial
-      env:
-        global:
-          - DOCKER_IMG_VER=0.5.4
       language: java
       jdk:
         - openjdk8
         - openjdk11
-      services:
-        - docker
-      before_install:
-        - docker pull ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
-        - docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
-        - docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER} --config ./src/test/resources/config/demo-config.yml
       before_script:
         - sqlite3 -version
         - make -version
@@ -54,4 +13,29 @@ jobs:
         - make sqlite-db-build
         - make sqlite-db-populate
       script:
-        - ./gradlew test
+        - "./gradlew test --tests=org.*"
+      after_success:
+        - "./gradlew jacocoTestReport"
+        - bash <(curl -s https://codecov.io/bash)
+
+    - stage: DockerIntegrationTest
+      dist: xenial
+      language: java
+      jdk:
+        - openjdk8
+        - openjdk11
+      services:
+        - docker
+      before_install:
+        - make docker-build
+        - source ci/set-docker-image-version.sh
+        - echo ${DOCKER_IMG_VER}
+        - docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
+        - docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER} --config ./src/test/resources/config/demo-config.yml
+      script:
+        - "./gradlew test --tests=integration.*"
+    
+    - stage: DockerPublish
+      if: branch = master
+
+
