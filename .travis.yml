@@ -1,6 +1,7 @@
 jobs:
   include:
     - stage: UnitTest
+      if: commit_message = foobar ## TODO DELETE
       dist: xenial
       language: java
       jdk:
@@ -18,6 +19,7 @@ jobs:
         - bash <(curl -s https://codecov.io/bash)
 
     - stage: DockerIntegrationTest
+      if: commit_message = foobar ## TODO DELETE
       dist: xenial
       language: java
       jdk:
@@ -42,6 +44,10 @@ jobs:
         AND head_repo = ga4gh/ga4gh-starter-kit-common
         AND head_branch =~ /^release/
         AND commit_message =~ /^trigger-release(-github)?$/
+      dist: xenial
+      language: java
+      jdk:
+        - openjdk11
       before_deploy:
         - source ci/set-docker-image-version.sh
         - export TAG_NAME="${DOCKER_IMG_VER}"
