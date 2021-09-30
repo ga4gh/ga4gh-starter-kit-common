@@ -37,12 +37,10 @@ jobs:
     
     - stage: GithubRelease
       if: >
-        type = pull_request
+        type = push
         AND repo = ga4gh/ga4gh-starter-kit-common
-        AND branch = main
+        AND branch =~ /^release\\/\\d+\\.\\d+\\.\\d+?$/
         AND fork = false
-        AND head_repo = ga4gh/ga4gh-starter-kit-common
-        AND head_branch =~ /^release/
         AND commit_message =~ /^trigger-release(-github)?$/
       dist: xenial
       language: java
@@ -85,12 +83,10 @@ jobs:
     
     - stage: DockerRelease
       if: >
-        type = pull_request
+        type = push
         AND repo = ga4gh/ga4gh-starter-kit-common
-        AND branch = main
+        AND branch =~ /^release\\/\\d+\\.\\d+\\.\\d+?$/
         AND fork = false
-        AND head_repo = ga4gh/ga4gh-starter-kit-common
-        AND head_branch =~ /^release/
         AND commit_message =~ /^trigger-release(-docker)?$/
       dist: xenial
       language: java
