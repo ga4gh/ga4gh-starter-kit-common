@@ -77,6 +77,8 @@ jobs:
       services:
         - docker
       before_script:
+        - make docker-build
         - source ci/set-docker-image-version.sh
+        - echo ${DOCKER_IMG_VER}
       script:
         - make docker-publish
