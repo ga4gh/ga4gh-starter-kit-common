@@ -39,7 +39,7 @@ jobs:
         AND repo = ga4gh/ga4gh-starter-kit-common
         AND branch =~ /^release\/\d+\.\d+\.\d+$/
         AND fork = false
-        AND commit_message =~ /^trigger-release(-github)?/
+        AND commit_message =~ /^trigger-release(-github)?$/
       dist: xenial
       language: java
       jdk:
@@ -69,7 +69,7 @@ jobs:
         AND repo = ga4gh/ga4gh-starter-kit-common
         AND branch =~ /^release\/\d+\.\d+\.\d+$/
         AND fork = false
-        AND commit_message =~ /^trigger-release(-docker)?/
+        AND commit_message =~ /^trigger-release(-docker)?$/
       dist: xenial
       language: java
       jdk:
