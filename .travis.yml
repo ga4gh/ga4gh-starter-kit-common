@@ -53,7 +53,6 @@ jobs:
         - export TAG_NAME="v${DOCKER_IMG_VER}"
         - export NAME="GA4GH Starter Kit - Common v${DOCKER_IMG_VER}"
         - export BODY="v${DOCKER_IMG_VER} release of commons library for the GA4GH Starter Kit"
-        - git tag $TAG_NAME
       deploy:
         provider: releases
         file_glob: true
