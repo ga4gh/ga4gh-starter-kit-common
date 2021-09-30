@@ -49,11 +49,12 @@ jobs:
         - export BODY="v${DOCKER_IMG_VER} release of commons library for the GA4GH Starter Kit"
       deploy:
         provider: releases
+        file_glob: true
         file:
-          - ci
-          - database
-          - gradle
-          - src
+          - ci/**/*
+          - database/**/*
+          - gradle/**/*
+          - src/**/*
           - .gitattributes
           - .gitignore
           - .travis.yml
@@ -82,7 +83,7 @@ jobs:
         AND fork = false
         AND head_repo = ga4gh/ga4gh-starter-kit-common
         AND head_branch =~ /^release/
-        AND commit_message = /^trigger-release(-docker)?$/
+        AND commit_message =~ /^trigger-release(-docker)?$/
       dist: xenial
       language: java
       jdk:
