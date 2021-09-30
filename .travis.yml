@@ -48,6 +48,8 @@ jobs:
       language: java
       jdk:
         - openjdk11
+      script:
+        - echo "Deploying to Github Releases"
       before_deploy:
         - source ci/set-docker-image-version.sh
         - export TAG_NAME="${DOCKER_IMG_VER}"
