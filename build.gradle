@@ -36,6 +36,7 @@ version '0.5.4'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 java {
