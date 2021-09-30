@@ -35,8 +35,8 @@ group 'org.ga4gh'
 version '0.5.4'
 
 repositories {
-    jcenter()
     mavenCentral()
+    mavenLocal()
 }
 
 java {
