@@ -79,6 +79,8 @@ jobs:
         body: $BODY
         api_key: "$GITHUB_API_KEY"
         overwrite: true
+        on:
+          all_branches: true
     
     - stage: DockerRelease
       if: >
