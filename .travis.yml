@@ -39,7 +39,7 @@ jobs:
       if: >
         type = push
         AND repo = ga4gh/ga4gh-starter-kit-common
-      # AND branch =~ /^release\\/\\d+\\.\\d+\\.\\d+?$/
+        AND branch =~ /^release\\/\\d+\\.\\d+\\.\\d+?$/
       # AND fork = false
       # AND commit_message =~ /^trigger-release(-github)?$/
       dist: xenial
