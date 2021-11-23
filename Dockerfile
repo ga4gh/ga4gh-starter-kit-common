@@ -2,7 +2,7 @@
 # BUILDER CONTAINER
 ##################################################
 
-FROM openjdk:11.0.10 as builder
+FROM openjdk:11.0.12-jdk-slim-buster as builder
 
 USER root
 
@@ -11,6 +11,7 @@ WORKDIR /usr/src/dependencies
 # INSTALL MAKE
 RUN apt update
 RUN apt install build-essential -y
+RUN apt install wget -y
 
 # INSTALL SQLITE3
 RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
@@ -31,7 +32,7 @@ RUN make sqlite-db-refresh
 # FINAL CONTAINER
 ##################################################
 
-FROM adoptopenjdk/openjdk12:jre-12.0.2_10-alpine
+FROM openjdk:11.0.12-jre-slim-buster
 
 USER root
 

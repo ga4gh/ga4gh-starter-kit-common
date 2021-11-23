@@ -32,11 +32,11 @@ plugins {
 }
 
 group 'org.ga4gh'
-version '0.5.4'
+version '0.5.5'
 
 repositories {
-    jcenter()
     mavenCentral()
+    mavenLocal()
 }
 
 java {

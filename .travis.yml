@@ -1,31 +1,85 @@
-dist: xenial
-addons:
-  apt:
-    sources:
-      - travis-ci/sqlite3
-    packages:
-      - sqlite3
-    update: true
-git:
-  depth: false
-env:
-  global:
-    - DOCKER_IMG_VER=0.5.4
-language: java
-jdk: oraclejdk11
-services:
-  - docker
-before_install:
-  - docker pull ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
-  - docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
-  - docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER} --config ./src/test/resources/config/demo-config.yml
-before_script:
-  - sqlite3 -version
-  - make -version
-  - make clean-sqlite
-  - make sqlite-db-build
-  - make sqlite-db-populate
-script: "./gradlew test"
-after_success:
-  - "./gradlew jacocoTestReport"
-  - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - stage: UnitTest
+      dist: xenial
+      language: java
+      jdk:
+        - openjdk11
+      before_script:
+        - sqlite3 -version
+        - make -version
+        - make clean-sqlite
+        - make sqlite-db-build
+        - make sqlite-db-populate
+      script:
+        - "./gradlew test --tests=org.*"
+      after_success:
+        - "./gradlew jacocoTestReport"
+        - bash <(curl -s https://codecov.io/bash)
+
+    - stage: DockerIntegrationTest
+      dist: xenial
+      language: java
+      jdk:
+        - openjdk11
+      services:
+        - docker
+      before_install:
+        - make docker-build
+        - source ci/set-docker-image-version.sh
+        - echo ${DOCKER_IMG_VER}
+        - docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER}
+        - docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:${DOCKER_IMG_VER} --config ./src/test/resources/config/demo-config.yml
+      script:
+        - "./gradlew test --tests=integration.*"
+     
+    # - stage: GithubRelease
+    #   if: >
+    #     type = push
+    #     AND repo = ga4gh/ga4gh-starter-kit-common
+    #     AND branch =~ /^release\/\d+\.\d+\.\d+$/
+    #     AND fork = false
+    #     AND commit_message =~ /^trigger-release(-github)?$/
+    #   dist: xenial
+    #   language: java
+    #   jdk:
+    #     - openjdk11
+    #   script:
+    #     - echo "Deploying to Github Releases"
+    #     - source ci/set-docker-image-version.sh
+    #     - export TAG_NAME="v${DOCKER_IMG_VER}"
+    #     - export NAME="GA4GH Starter Kit - Common v${DOCKER_IMG_VER}"
+    #     - export BODY="v${DOCKER_IMG_VER} release of commons library for the GA4GH Starter Kit"
+    #     - git tag $TAG_NAME
+    #     - git tag  
+    #   deploy:
+    #     provider: releases
+    #     skip_cleanup: true
+    #     tag_name: $TAG_NAME
+    #     name: $NAME
+    #     body: $BODY
+    #     api_key: "$GITHUB_API_KEY"
+    #     overwrite: true
+    #     on:
+    #       all_branches: true
+    # 
+    # - stage: DockerRelease
+    #   if: >
+    #     type = push
+    #     AND repo = ga4gh/ga4gh-starter-kit-common
+    #     AND branch =~ /^release\/\d+\.\d+\.\d+$/
+    #     AND fork = false
+    #     AND commit_message =~ /^trigger-release(-docker)?$/
+    #   dist: xenial
+    #   language: java
+    #   jdk:
+    #     - openjdk11
+    #   services:
+    #     - docker
+    #   before_script:
+    #     - make docker-build
+    #     - source ci/set-docker-image-version.sh
+    #     - echo ${DOCKER_IMG_VER}
+    #     - docker login -u ${DOCKER_USER} -p ${DOCKER_TOKEN}
+    #   script:
+    #     - make docker-publish
