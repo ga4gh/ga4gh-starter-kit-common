@@ -113,7 +113,8 @@ public class DemoConfiguration implements WebMvcConfigurer {
         @Qualifier("defaultDemoConfigContainer") DemoYamlConfigContainer defaultContainer,
         @Qualifier("userDemoConfigContainer") DemoYamlConfigContainer userContainer
     ) {
-        DeepObjectMerger.merge(userContainer, defaultContainer);
+        DeepObjectMerger merger = new DeepObjectMerger();
+        merger.merge(userContainer, defaultContainer);
         return defaultContainer;
     }
 
