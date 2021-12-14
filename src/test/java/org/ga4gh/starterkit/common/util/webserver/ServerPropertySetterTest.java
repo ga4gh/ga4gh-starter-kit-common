@@ -1,6 +1,8 @@
 package org.ga4gh.starterkit.common.util.webserver;
 
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.cli.Options;
 import org.ga4gh.starterkit.common.demo.DemoConfiguration;
@@ -18,22 +20,73 @@ public class ServerPropertySetterTest {
                 new String[]{},
                 "4500",
                 "4501",
-                false
+                false,
+                false,
+                true,
+                null
             },
             {
                 new String[]{"--config", "./src/test/resources/config/demo-config.yml"},
                 "7000",
                 "7001",
-                true
+                true,
+                false,
+                true,
+                null
+            },
+            {
+                new String[]{"--config", "./src/test/resources/config/demo-config.yml"},
+                "7000",
+                "7001",
+                true,
+                true,
+                true,
+                null
+            },
+            {
+                new String[]{"--config", "./src/test/resources/config/demo-config.yml"},
+                "7000",
+                "7001",
+                true,
+                true,
+                true,
+                new HashSet<>() {{ add(Integer.class); }}
+            },
+            {
+                new String[]{"--config", "./src/test/resources/config/demo-config.yml"},
+                "7000",
+                "7001",
+                true,
+                false,
+                true,
+                new HashSet<>() {{ add(Integer.class); }}
             }
         };
     }
 
     @Test(dataProvider = "cases")
-    public void testSetPortProperties(String[] args, String expPublicApiPort, String expAdminApiPort, boolean expSpringLoggingDisabled) throws Exception {
-        new ServerPropertySetter();
+    public void testSetPortProperties(String[] args, String expPublicApiPort, String expAdminApiPort,
+        boolean expSpringLoggingDisabled, boolean useComplexConstructor, boolean useDefaults,
+        Set<Class<?>> mergerAtomicClasses
+    ) throws Exception {
+        ServerPropertySetter setter = null;
+        if (useComplexConstructor) {
+            if (mergerAtomicClasses == null) {
+                setter = new ServerPropertySetter(useDefaults);
+            } else {
+                setter = new ServerPropertySetter(useDefaults, mergerAtomicClasses);
+            }
+        } else {
+            if (mergerAtomicClasses == null) {
+                setter = new ServerPropertySetter();
+            } else {
+                setter = new ServerPropertySetter(mergerAtomicClasses);
+            }
+        }
+        
         Options options = new DemoConfiguration().getCommandLineOptions();
-        boolean success = ServerPropertySetter.setServerProperties(DemoYamlConfigContainer.class, args, options, "config");
+        
+        boolean success = setter.setServerProperties(DemoYamlConfigContainer.class, args, options, "config");
         
         Assert.assertTrue(success);
         Properties systemProperties = System.getProperties();

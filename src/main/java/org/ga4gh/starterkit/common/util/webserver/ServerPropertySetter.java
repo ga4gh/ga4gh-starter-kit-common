@@ -1,6 +1,7 @@
 package org.ga4gh.starterkit.common.util.webserver;
 
 import java.util.Properties;
+import java.util.Set;
 import org.apache.commons.cli.Options;
 import org.ga4gh.starterkit.common.config.ContainsServerProps;
 import org.ga4gh.starterkit.common.config.ServerProps;
@@ -11,14 +12,34 @@ import org.springframework.boot.DefaultApplicationArguments;
 
 public class ServerPropertySetter {
 
-    public static <T extends ContainsServerProps> boolean setServerProperties(Class<T> configClass, String[] args, Options options, String optionName) {
+    private DeepObjectMerger merger;
+
+    public ServerPropertySetter() {
+        merger = new DeepObjectMerger();
+    }
+
+    public ServerPropertySetter(boolean useDefaults) {
+        merger = new DeepObjectMerger(useDefaults);
+    }
+
+    public ServerPropertySetter(Set<Class<?>> mergerAtomicClasses) {
+        merger = new DeepObjectMerger();
+        merger.addAtomicClasses(mergerAtomicClasses);
+    }
+
+    public ServerPropertySetter(boolean useDefaults, Set<Class<?>> mergerAtomicClasses) {
+        merger = new DeepObjectMerger(useDefaults);
+        merger.addAtomicClasses(mergerAtomicClasses);
+    }
+
+    public <T extends ContainsServerProps> boolean setServerProperties(Class<T> configClass, String[] args, Options options, String optionName) {
         try {
             // obtain the final merged configuration object
             ApplicationArguments applicationArgs = new DefaultApplicationArguments(args);
             T defaultConfig = configClass.getConstructor().newInstance();
             T userConfig = CliYamlConfigLoader.load(configClass, applicationArgs, options, optionName);
             if (userConfig != null) {
-                DeepObjectMerger.merge(userConfig, defaultConfig);
+                merger.merge(userConfig, defaultConfig);
             }
             T mergedConfig = defaultConfig;
             ServerProps serverProps = mergedConfig.getServerProps();

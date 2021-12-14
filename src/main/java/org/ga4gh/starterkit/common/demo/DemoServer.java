@@ -19,6 +19,7 @@ public class DemoServer {
 
     private static boolean setup(String[] args) {
         Options options = new DemoConfiguration().getCommandLineOptions();
-        return ServerPropertySetter.setServerProperties(DemoYamlConfigContainer.class, args, options, "config");
+        ServerPropertySetter setter = new ServerPropertySetter();
+        return setter.setServerProperties(DemoYamlConfigContainer.class, args, options, "config");
     }
 }
