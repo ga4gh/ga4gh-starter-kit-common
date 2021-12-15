@@ -31,8 +31,16 @@ plugins {
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
 }
 
+configurations.all {
+  resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    if (details.requested.group == 'org.apache.logging.log4j') {
+      details.useVersion '2.16.0'
+    }
+  }
+}
+
 group 'org.ga4gh'
-version '0.5.6'
+version '0.5.7'
 
 repositories {
     mavenCentral()
@@ -49,6 +57,7 @@ dependencies {
     api 'org.apache.commons:commons-math3:3.6.1'
 
     // implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.15.0'
     implementation 'com.google.guava:guava:28.1-jre'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.0'
     implementation 'commons-cli:commons-cli:1.4'
