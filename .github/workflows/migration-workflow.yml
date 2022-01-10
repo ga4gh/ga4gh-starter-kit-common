@@ -36,8 +36,9 @@ jobs:
           #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           #settings-path: ${{ github.workspace }} # location for the settings.xml file
       - name: Before Script
+      - run: sqlite3 -version
       - run: | #Setting up the SQLite database and Make
-        sqlite3 -version
+        echo sqlite3 -version
         make -version
         make clean-sqlite
         make sqlite-db-build
