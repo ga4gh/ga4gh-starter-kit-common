@@ -2,7 +2,7 @@
 
 name: GitHub Actions Test
 on: 
-  workflow_dispatch:
+  workflow_dispatch: #the UI button only appears if this file exists on the master branch
   push:
     branches: [ migrate-to-github-actions]
   pull_request:
