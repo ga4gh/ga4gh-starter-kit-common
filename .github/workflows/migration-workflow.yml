@@ -24,7 +24,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
   Unit Test:
     build:
-      runs-on: ubnutu-latest
+      runs-on: ubuntu-latest
 
       steps:
       - uses: actions/checkout@v2
