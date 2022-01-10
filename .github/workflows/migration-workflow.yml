@@ -22,7 +22,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  Unit Test:
+  Unit-Test: # " " not allowed in names
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -33,17 +33,17 @@ jobs:
         distribution: 'xenial' #using a specific distribution of jdk11 (was AdoptOpenJDK)
         #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         #settings-path: ${{ github.workspace }} # location for the settings.xml file
-    #- name: Before Script
-    - run: | #Setting up the SQLite database and Make
+    - name: Before Script
+      run: | #Setting up the SQLite database and Make
         sqlite3 -version
         make -version
         make clean-sqlite
         make sqlite-db-build
         make sqlite-db-populate
-    #- name: Script
-    - run: "./gradlew test --tests=org.*"
-    #- name: After Success
-    - run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
+    - name: Script
+      run: "./gradlew test --tests=org.*"
+    - name: After Success
+      run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
         "./gradlew jacocoTestReport" 
         bash <(curl -s https://codecov.io/bash)
 
