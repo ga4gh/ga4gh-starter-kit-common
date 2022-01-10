@@ -48,9 +48,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
-    - name: Creating Docker Image
-      uses: 'docker'
-      image: 'Dockerfile'
+    # - name: Creating Docker Image
+    #   uses: 'docker'
+    #   image: 'Dockerfile'
     - name: Before Install
       run: |
         make docker-build
