@@ -37,8 +37,6 @@ jobs:
         #settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Grant Permissions to gradlew
       run: chmod +x gradlew
-    - name: Test
-      run: ./gradlew test --tests "*"
     - name: Before Script
       run: | #Setting up the SQLite database and Make
         sqlite3 -version
@@ -46,6 +44,15 @@ jobs:
         make clean-sqlite
         make sqlite-db-build
         make sqlite-db-populate
+    - name: Test
+      run: ./gradlew test --tests "*"
+    # - name: Before Script
+    #   run: | #Setting up the SQLite database and Make
+    #     sqlite3 -version
+    #     make -version
+    #     make clean-sqlite
+    #     make sqlite-db-build
+    #     make sqlite-db-populate
     - name: Script
       run: "./gradlew test --tests=org.*"
     - name: After Success
