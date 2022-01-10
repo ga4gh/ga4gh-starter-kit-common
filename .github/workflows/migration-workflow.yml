@@ -49,6 +49,7 @@ jobs:
     - name: Script
       run: "./gradlew test --tests=org.*"
     - name: After Success
+      run: "./gradlew tasks"
       run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
         "./gradlew jacocoTestReport" 
         bash <(curl -s https://codecov.io/bash)
