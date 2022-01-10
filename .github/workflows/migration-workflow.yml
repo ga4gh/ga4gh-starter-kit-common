@@ -2,8 +2,11 @@
 
 name: GitHub Actions Demo
 on: 
-  [push]
   workflow_dispatch:
+  push:
+    branches: [ migrate-to-github-actions]
+  pull_request:
+    branches: [ migrate-to-github-actions]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
