@@ -30,7 +30,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'xenial' #using a specific distribution of jdk11 (was AdoptOpenJDK)
+        distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
         #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         #settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Before Script
