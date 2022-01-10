@@ -1,5 +1,4 @@
 #This is a test
-
 name: GitHub Actions Migration
 on: 
   workflow_dispatch: #the UI button only appears if this file exists on the master branch
@@ -8,20 +7,22 @@ on:
   pull_request:
     branches: [ migrate-to-github-actions]
 jobs:
-  Gradle-Wrapper-Validation: #This is creating a fresh gradle build, doesn't really help...
+  Gradle-Wrapper-Validation:
     runs-on: ubuntu-latest
     steps:
+    - uses: /build.gradle
     - uses: actions/checkout@v2
     - name: Set up JDK 11
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v2  
       with:
         java-version: '11'
         distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
         #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         #settings-path: ${{ github.workspace }} # location for the settings.xml file
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-    - run: "gradle wrapper"
+    #- name: Setup Gradle
+    #  uses: gradle/gradle-build-action@v2
+    #- run: "gradle wrapper"
+    #- run: "./gradlew wrapper"
     - uses: gradle/wrapper-validation-action@v1
   Unit-Test: # " " not allowed in names
     needs: Gradle-Wrapper-Validation
@@ -35,8 +36,8 @@ jobs:
         distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
         #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         #settings-path: ${{ github.workspace }} # location for the settings.xml file
-    - name: Grant Permissions to gradlew
-      run: chmod +x gradlew
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
     - name: Before Script
       run: | #Setting up the SQLite database and Make
         sqlite3 -version
@@ -44,15 +45,6 @@ jobs:
         make clean-sqlite
         make sqlite-db-build
         make sqlite-db-populate
-    - name: Test
-      run: ./gradlew test --tests "*"
-    # - name: Before Script
-    #   run: | #Setting up the SQLite database and Make
-    #     sqlite3 -version
-    #     make -version
-    #     make clean-sqlite
-    #     make sqlite-db-build
-    #     make sqlite-db-populate
     - name: Script
       run: "./gradlew test --tests=org.*"
     - name: After Success
