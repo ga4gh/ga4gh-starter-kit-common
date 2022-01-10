@@ -15,7 +15,7 @@ jobs:
         - "./gradlew test --tests=org.*"
       after_success:
         - "./gradlew jacocoTestReport"
-        - bash <(curl -s https://codecov.io/bash)
+        - bash <(curl -s https://codecov.io/bash) #submits the last report
 
     - stage: DockerIntegrationTest
       dist: xenial
