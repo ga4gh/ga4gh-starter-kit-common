@@ -48,8 +48,9 @@ jobs:
         make sqlite-db-populate
     - name: Script
       run: "./gradlew test --tests=org.*"
-    - name: After Success
+    - name: Check Gradle Wrapper Tasks
       run: "./gradlew tasks"
+    - name: After Success
       run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
         "./gradlew jacocoTestReport" 
         bash <(curl -s https://codecov.io/bash)
