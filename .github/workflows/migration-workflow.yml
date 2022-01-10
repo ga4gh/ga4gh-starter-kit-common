@@ -36,14 +36,16 @@ jobs:
           #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           #settings-path: ${{ github.workspace }} # location for the settings.xml file
       - name: Before Script
-      - run: sqlite3 -version #Setting up the SQLite database and Make
-      - run: make -version
-      - run: make clean-sqlite
-      - run: make sqlite-db-build
-      - run: make sqlite-db-populate
+      - run: | #Setting up the SQLite database and Make
+        sqlite3 -version
+        make -version
+        make clean-sqlite
+        make sqlite-db-build
+        make sqlite-db-populate
       - name: Script
       - run: "./gradlew test --tests=org.*"
       - name: After Success
-      - run: "./gradlew jacocoTestReport" #jacocoTestReport is for testing code coverage
-      - run: bash <(curl -s https://codecov.io/bash) #submits the last report to the link
+      - run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
+        "./gradlew jacocoTestReport" 
+        bash <(curl -s https://codecov.io/bash)
 
