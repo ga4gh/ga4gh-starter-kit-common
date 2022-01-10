@@ -22,8 +22,14 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  Unit-Test: # " " not allowed in names
+  Gradle-Wrapper-Validation:
     needs: Explore-GitHub-Actions #make sure previous step is completed
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      uses: gradle/wrapper-validation-action@v1
+  Unit-Test: # " " not allowed in names
+    needs: Gradle-Wrapper-Validation
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -41,10 +47,6 @@ jobs:
         make clean-sqlite
         make sqlite-db-build
         make sqlite-db-populate
-    - name: Validate Gradle wrapper
-      steps:
-      - uses: actions/checkout@v2
-        uses: gradle/wrapper-validation-action@v1
     - name: Script
       run: "./gradlew test --tests=org.*"
     - name: After Success
