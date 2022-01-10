@@ -39,7 +39,7 @@ jobs:
         ./gradlew jacocoTestReport
         bash <(curl -s https://codecov.io/bash)
   Docker-Integration-Test:
-    required: Unit-Test
+    needs: Unit-Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
