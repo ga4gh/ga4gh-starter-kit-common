@@ -26,7 +26,6 @@ jobs:
     needs: Explore-GitHub-Actions #make sure previous step is completed
     runs-on: ubuntu-latest
     steps:
-    - run: "gradle wrapper"
     - uses: gradle/wrapper-validation-action@v1
   Unit-Test: # " " not allowed in names
     needs: Gradle-Wrapper-Validation
