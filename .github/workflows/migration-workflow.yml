@@ -1,10 +1,5 @@
 name: GitHub Actions Migration
-on: 
-  workflow_dispatch: #the UI button only appears if this file exists on the master branch
-  push:
-    branches: [ migrate-to-github-actions]
-  pull_request:
-    branches: [ migrate-to-github-actions]
+on: [push, pull_request, workflow_dispatch] #workflow_dispatch works only if its active in the main branch
 jobs:
   Unit-Test:
     runs-on: ubuntu-latest
@@ -46,9 +41,6 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
-    # - name: Creating Docker Image
-    #   uses: 'docker'
-    #   image: 'Dockerfile'
     - name: Before Install
       run: |
         make docker-build
