@@ -31,32 +31,32 @@ jobs:
       run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
         ./gradlew jacocoTestReport
         bash <(curl -s https://codecov.io/bash)
-    Docker-IntegrationTest:
-      needs: Unit-Test
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with: 
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Setup Docker Buildx #used for caching image layers, improves performance
-        uses: docker/setup-buildx-action@v1
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false #not pushing the docker image yet
-          tags: ga4gh/ga4gh-starter-kit-common:${VERSION}
-      - name: Running Tests
-        #using ":test" for image version (will be changed when pushing docker image)
-        run: |
-          docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:test
-          docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:test --config ./src/test/resources/config/demo-config.yml
-      - name: Script (Gradle Wrapper)
-        run: ./gradlew test --tests=integration.*
+  Docker-Integration-Test:
+    needs: Unit-Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with: 
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    - name: Setup Docker Buildx #used for caching image layers, improves performance
+      uses: docker/setup-buildx-action@v1
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false #not pushing the docker image yet
+        tags: ga4gh/ga4gh-starter-kit-common:${VERSION}
+    - name: Running Tests
+      #using ":test" for image version (will be changed when pushing docker image)
+      run: |
+        docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:test
+        docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:test --config ./src/test/resources/config/demo-config.yml
+    - name: Script (Gradle Wrapper)
+      run: ./gradlew test --tests=integration.*
 
 
