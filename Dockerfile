@@ -29,6 +29,11 @@ COPY database/sqlite database/sqlite
 RUN make sqlite-db-refresh
 
 #bootjar
+FROM gradle:jdk11 as gradleimage
+COPY . /home/gradle/source
+WORKDIR /home/gradle/source
+RUN gradle build
+
 RUN ls
 RUN ./gradle bootJar
 RUN ls
