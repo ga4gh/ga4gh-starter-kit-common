@@ -42,6 +42,7 @@ WORKDIR /usr/src/app
 
 # copy jar, dev db, and dev resource files
 # COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+RUN ./gradlew bootJar
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
