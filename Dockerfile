@@ -37,8 +37,6 @@ FROM openjdk:11.0.12-jre-slim-buster
 USER root
 
 ARG VERSION
-RUN echo "Version is "
-RUN echo VERSION
 
 WORKDIR /usr/src/app
 
