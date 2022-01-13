@@ -22,7 +22,8 @@ RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
     && make install
 
 #bootjar
-RUN gradlew bootJar
+RUN ls
+RUN ./gradlew bootJar
 RUN ls
 # COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
 
