@@ -50,7 +50,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: false #not pushing the docker image yet
-        tags: ga4gh/ga4gh-starter-kit-common:latest # was ${VERSION}
+        tags: ga4gh/ga4gh-starter-kit-common:0.5.7 # was: latest, ${VERSION}
     - name: Running Tests
       #using ":test" for image version (will be changed when pushing docker image)
       run: |
