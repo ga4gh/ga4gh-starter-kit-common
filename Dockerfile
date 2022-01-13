@@ -23,7 +23,8 @@ RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
 
 #bootjar
 RUN ./gradlew bootJar
-COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+RUN ls
+# COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
 
 
 # USER 'make' and 'sqlite3' to create the dev database
@@ -47,7 +48,6 @@ WORKDIR /usr/src/app
 
 # copy jar, dev db, and dev resource files
 # COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
-
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
