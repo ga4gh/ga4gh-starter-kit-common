@@ -28,16 +28,15 @@ COPY build.gradle build.gradle
 COPY database/sqlite database/sqlite
 RUN make sqlite-db-refresh
 
-#bootjar
+# BUILDING GRADLE
 FROM gradle:jdk11 as gradleimage
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source
 RUN gradle build
 
-RUN ls
+# abootJar
 RUN ./gradle bootJar
-RUN ls
-# COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
 
 ##################################################
 # FINAL CONTAINER
