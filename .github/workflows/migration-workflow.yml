@@ -48,14 +48,14 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        # file: ./Dockerfile
+        file: ./Dockerfile
         push: false #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:latest
     - name: Running Tests
       #using ":test" for image version (will be changed when pushing docker image)
       run: |
-        docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:test
-        docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:test --config ./src/test/resources/config/demo-config.yml
+        docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:latest
+        docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:latest --config ./src/test/resources/config/demo-config.yml
     - name: Script (Gradle Wrapper)
       run: ./gradlew test --tests=integration.*
 
