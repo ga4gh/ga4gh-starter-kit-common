@@ -59,6 +59,6 @@ jobs:
     - name: Script (Gradle Test Integration)
       # run: docker run --rm -d --name gradle-test-integration ./gradlew test --tests=integration.*
       # run: ./gradlew test --tests=org.*
-      run: ./gradlew test --tests=integration.*"
+      run: ./gradlew test --tests=integration.*
 
 
