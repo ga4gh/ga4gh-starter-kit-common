@@ -39,7 +39,7 @@ WORKDIR /home/gradle/source
 
 COPY . .
 
-RUN gradle build
+# RUN gradle build
 RUN gradle wrapper
 RUN ./gradlew bootJar
 
