@@ -33,11 +33,10 @@ FROM gradle:jdk11 as gradleimage
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source
 RUN gradle build
+RUN gradle wrapper
 
 # abootJar
-RUN ./gradle bootJar
-RUN ls
-# COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+RUN ./gradlew bootJar
 
 ##################################################
 # FINAL CONTAINER
