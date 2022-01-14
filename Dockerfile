@@ -36,14 +36,12 @@ FROM gradle:jdk11 as gradleimage
 
 WORKDIR /home/gradle/source
 
-COPY . .
+# COPY . .
+COPY /usr/src/dependencies .
 
 RUN gradle build
 RUN gradle wrapper
 RUN ./gradlew bootJar
-RUN ls -a
-# COPY . /home/gradle/wrapper
-#above step is experimental
 
 ##################################################
 # FINAL CONTAINER
@@ -58,7 +56,7 @@ ARG VERSION
 WORKDIR /usr/src/app
 
 # copy jar, dev db, and dev resource files
-# COPY --from=gradleimage build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+COPY --from=gradleimage build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
