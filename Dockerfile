@@ -33,13 +33,15 @@ RUN make sqlite-db-refresh
 ##################################################
 
 FROM gradle:jdk11 as gradleimage
+
 WORKDIR /home/gradle/source
+
 COPY . .
+
 RUN gradle build
 RUN gradle wrapper
-
-# bootJar
 RUN ./gradlew bootJar
+RUN ls -a
 # COPY . /home/gradle/wrapper
 #above step is experimental
 
