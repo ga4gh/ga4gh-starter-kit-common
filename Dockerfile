@@ -35,8 +35,9 @@ WORKDIR /home/gradle/source
 RUN gradle build
 RUN gradle wrapper
 
-# abootJar
+# bootJar
 RUN ./gradlew bootJar
+RUN ls
 
 ##################################################
 # FINAL CONTAINER

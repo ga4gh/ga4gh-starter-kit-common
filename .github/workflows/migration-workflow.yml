@@ -58,7 +58,7 @@ jobs:
         docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:latest --config ./src/test/resources/config/demo-config.yml
     - name: Script (Gradle Test Integration)
       # run: docker run --rm -d --name gradle-test-integration ./gradlew test --tests=integration.*
-      # run: ./gradlew test --tests=org.*
-      run: ./gradlew test --tests=integration.*
+      run: ./gradlew test --tests=org.*
+      # run: ./gradlew test --tests=integration.*
 
 
