@@ -37,7 +37,7 @@ RUN gradle wrapper
 
 # bootJar
 RUN ./gradlew bootJar
-# COPY . /home/gradle/wrapper
+COPY . /home/gradle/wrapper
 #above step is experimental
 
 ##################################################
