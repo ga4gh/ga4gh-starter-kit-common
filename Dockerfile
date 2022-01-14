@@ -37,7 +37,7 @@ RUN gradle wrapper
 
 # bootJar
 RUN ./gradlew bootJar
-COPY . /home/gradle/wrapper
+# COPY . /home/gradle/wrapper
 #above step is experimental
 
 ##################################################
@@ -54,7 +54,7 @@ WORKDIR /usr/src/app
 
 # copy jar, dev db, and dev resource files
 # COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
-COPY --from=gradleimage . /home/gradle/wrapper
+# COPY --from=gradleimage . /home/gradle/wrapper
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
