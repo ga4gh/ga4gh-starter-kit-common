@@ -36,8 +36,8 @@ FROM gradle:jdk11 as gradleimage
 
 WORKDIR /home/gradle/source
 
-# COPY . .
-COPY --from=builder /usr/src/dependencies .
+COPY . .
+# COPY /usr/src/dependencies .
 
 RUN gradle build
 RUN gradle wrapper
