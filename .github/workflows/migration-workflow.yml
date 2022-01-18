@@ -1,36 +1,36 @@
 name: GitHub Actions Migration
 on: [push, pull_request, workflow_dispatch] #workflow_dispatch works only if its active in the main branch
 jobs:
-  Unit-Test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-    - name: Setup Gradle Wrapper
-      run: "gradle wrapper"
-    - name: Validate Wrapper
-      uses: gradle/wrapper-validation-action@v1
-    - name: Before Script
-      run: | #Setting up the SQLite database and Make
-        sqlite3 -version
-        make -version
-        make clean-sqlite
-        make sqlite-db-build
-        make sqlite-db-populate
-    - name: Script
-      run: "./gradlew test --tests=org.*"
-    - name: After Success
-      run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
-        ./gradlew jacocoTestReport
-        bash <(curl -s https://codecov.io/bash)
+  # Unit-Test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Set up JDK 11
+  #     uses: actions/setup-java@v2
+  #     with:
+  #       java-version: '11'
+  #       distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
+  #   - name: Setup Gradle
+  #     uses: gradle/gradle-build-action@v2
+  #   - name: Setup Gradle Wrapper
+  #     run: "gradle wrapper"
+  #   - name: Validate Wrapper
+  #     uses: gradle/wrapper-validation-action@v1
+  #   - name: Before Script
+  #     run: | #Setting up the SQLite database and Make
+  #       sqlite3 -version
+  #       make -version
+  #       make clean-sqlite
+  #       make sqlite-db-build
+  #       make sqlite-db-populate
+  #   - name: Script
+  #     run: "./gradlew test --tests=org.*"
+  #   - name: After Success
+  #     run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
+  #       ./gradlew jacocoTestReport
+  #       bash <(curl -s https://codecov.io/bash)
   Docker-Integration-Test:
-    needs: Unit-Test
+    # needs: Unit-Test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -59,7 +59,7 @@ jobs:
         tags: ga4gh/ga4gh-starter-kit-common:latest
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new
-    about GitHub's Cache limit
+    # about GitHub's Cache limit
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
