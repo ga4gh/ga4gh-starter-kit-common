@@ -66,6 +66,8 @@ jobs:
         push: true #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:test
         build-args: VERSION="${{ env.version }}"
+    - name: Print Version
+      run: echo ${{ env.version }}
     ##### FOR CACHING #####
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new
