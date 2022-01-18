@@ -67,7 +67,7 @@ jobs:
       run: |
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-    #######################
+    ######################
     - name: Running Tests
       run: |
         docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:test
