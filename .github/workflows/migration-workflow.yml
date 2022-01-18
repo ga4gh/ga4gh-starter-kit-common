@@ -57,11 +57,12 @@ jobs:
       with:
         context: .
         # builder: ${{ steps.buildx.outputs.name }} #didn't fix
+        builder: docker
         file: ./Dockerfile
         push: false #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:latest
-        cache-from: type=registry,src=/tmp/.buildx-cache
-        cache-to: type=registry,dest=/tmp/.buildx-cache-new
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new
     - name: Move cache # about GitHub's Cache limit
       run: |
         rm -rf /tmp/.buildx-cache
