@@ -40,15 +40,15 @@ jobs:
       with: 
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-    - name: Setup Docker Buildx #used for caching image layers, improves performance
-      uses: docker/setup-buildx-action@v1
-    - name: Cache Docker layers
-      uses: actions/cache@v2
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+    # - name: Setup Docker Buildx #used for caching image layers, improves performance
+    #   uses: docker/setup-buildx-action@v1
+    # - name: Cache Docker layers
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: /tmp/.buildx-cache
+    #     key: ${{ runner.os }}-buildx-${{ github.sha }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-buildx-
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
@@ -56,13 +56,13 @@ jobs:
         file: ./Dockerfile
         push: false #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:latest
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new
+        # cache-from: type=local,src=/tmp/.buildx-cache
+        # cache-to: type=local,dest=/tmp/.buildx-cache-new
     #about GitHub's Cache limit
-    - name: Move cache
-      run: |
-        rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+    # - name: Move cache
+    #   run: |
+    #     rm -rf /tmp/.buildx-cache
+    #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
     - name: Running Tests
       #using ":test" for image version (will be changed when pushing docker image)
       run: |
