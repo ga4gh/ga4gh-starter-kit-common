@@ -38,6 +38,8 @@ jobs:
     - name: Setup Docker Buildx #used for caching image layers, improves performance
       id: buildx
       uses: docker/setup-buildx-action@v1
+      with:
+        install: true
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with: 
@@ -54,6 +56,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
+        builder: ${{ steps.buildx.outputs.name }}
         file: ./Dockerfile
         push: false #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:latest
@@ -64,8 +67,8 @@ jobs:
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
     - name: Running Tests
+    # commented from run: docker buildx run ga4gh/ga4gh-starter-kit-common:latest
       run: |
-        docker buildx run ga4gh/ga4gh-starter-kit-common:latest
         docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:latest
         docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:latest --config ./src/test/resources/config/demo-config.yml
     - name: Gradle Integration Test
