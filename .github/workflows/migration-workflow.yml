@@ -64,6 +64,8 @@ jobs:
     #   run: |
     #     rm -rf /tmp/.buildx-cache
     #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+    - name: Run the Docker image
+      run: docker run ga4gh/ga4gh-starter-kit-common:latest
     - name: Running Tests
       #using ":test" for image version (will be changed when pushing docker image)
       run: |
