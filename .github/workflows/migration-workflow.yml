@@ -56,18 +56,17 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        builder: ${{ steps.buildx.outputs.name }}
+        # builder: ${{ steps.buildx.outputs.name }} #didn't fix
         file: ./Dockerfile
         push: false #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:latest
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new
+        cache-from: type=registry,src=/tmp/.buildx-cache
+        cache-to: type=registry,dest=/tmp/.buildx-cache-new
     - name: Move cache # about GitHub's Cache limit
       run: |
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
     - name: Running Tests
-    # commented from run: docker buildx run ga4gh/ga4gh-starter-kit-common:latest
       run: |
         docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:latest
         docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:latest --config ./src/test/resources/config/demo-config.yml
