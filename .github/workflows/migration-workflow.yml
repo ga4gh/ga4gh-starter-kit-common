@@ -71,7 +71,7 @@ jobs:
     #     rm -rf /tmp/.buildx-cache
     #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
     - name: Running Tests
-      run: docker buildx run -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:latest
+      run: docker buildx run --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:latest
       # run: |
       #   docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:latest
       #   docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:latest --config ./src/test/resources/config/demo-config.yml
