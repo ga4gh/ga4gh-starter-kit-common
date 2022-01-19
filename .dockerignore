@@ -1,0 +1,5 @@
+#these files don't need to be sent to the docker build context
+.gradle/
+bin/
+build/
+gradle/
