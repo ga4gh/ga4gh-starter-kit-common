@@ -24,8 +24,8 @@ RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
 # USER 'make' and 'sqlite3' to create the dev database
 COPY Makefile Makefile
 # commented out
-COPY settings.gradle settings.gradle
-COPY build.gradle build.gradle
+# COPY settings.gradle settings.gradle
+# COPY build.gradle build.gradle
 COPY database/sqlite database/sqlite
 RUN make sqlite-db-refresh
 
@@ -39,10 +39,8 @@ WORKDIR /home/gradle/source
 
 COPY . .
 
-# RUN gradle build
-#15.5 seconds
 RUN gradle wrapper
-#37.9 seconds
+
 RUN ./gradlew bootJar
 
 ##################################################
