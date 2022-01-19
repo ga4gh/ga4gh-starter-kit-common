@@ -30,38 +30,38 @@ RUN make sqlite-db-refresh
 # GRADLE CONTAINER
 ##################################################
 
-# FROM gradle:jdk11 as gradleimage
+FROM gradle:jdk11 as gradleimage
 
-# WORKDIR /home/gradle/source
+WORKDIR /home/gradle/source
 
-# COPY . .
-
-# RUN gradle wrapper
-
-# RUN ./gradlew bootJar
-
-FROM gradle:jdk11 as CACHED_GRADLE
-
-#maybe should be changed
-ENV APP_HOME=/usr/app/ 
-WORKDIR $APP_HOME
-COPY build.gradle settings.gradle gradlew $APP_HOME
-COPY gradle $APP_HOME/gradle
-#build will fail but will download dependencies (to be cached later)
-RUN ./gradlew build || return 0 
 COPY . .
-RUN ./gradlew build
 
-FROM gradle:jdk11
+RUN gradle wrapper
 
-ARG VERSION
+RUN ./gradlew bootJar
 
-ENV ARTIFACT_NAME=ga4gh-starter-kit-common-${VERSION}.jar
-ENV APP_HOME=/usr/app/
-WORKDIR $APP_HOME
-COPY --from=CACHED_GRADLE $APP_HOME/build/libs/$ARTIFACT_NAME .
-EXPOSE 8080
-CMD ["java","-jar",$ARTIFACT_NAME]
+# FROM gradle:jdk11 as CACHED_GRADLE
+
+# #maybe should be changed
+# ENV APP_HOME=/usr/app/ 
+# WORKDIR $APP_HOME
+# COPY build.gradle settings.gradle gradlew $APP_HOME
+# COPY gradle $APP_HOME/gradle
+# #build will fail but will download dependencies (to be cached later)
+# RUN ./gradlew build || return 0 
+# COPY . .
+# RUN ./gradlew build
+
+# FROM gradle:jdk11
+
+# ARG VERSION
+
+# ENV ARTIFACT_NAME=ga4gh-starter-kit-common-${VERSION}.jar
+# ENV APP_HOME=/usr/app/
+# WORKDIR $APP_HOME
+# COPY --from=CACHED_GRADLE $APP_HOME/build/libs/$ARTIFACT_NAME .
+# EXPOSE 8080
+# CMD ["java","-jar",$ARTIFACT_NAME]
 
 ##################################################
 # EXPERIMENTAL GRADLE CONTAINER
@@ -80,8 +80,8 @@ ARG VERSION
 WORKDIR /usr/src/app
 
 # copy jar, dev db, and dev resource files
-# COPY --from=gradleimage /home/gradle/source/build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+COPY --from=gradleimage /home/gradle/source/build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
-# ENTRYPOINT ["java", "-jar", "ga4gh-starter-kit-common.jar"]
+ENTRYPOINT ["java", "-jar", "ga4gh-starter-kit-common.jar"]
