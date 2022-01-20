@@ -35,15 +35,15 @@ FROM gradle:jdk11 as gradleimage
 WORKDIR /home/gradle/source
 
 # RUN ls
-# COPY . .
-# RUN ls
-COPY settings.gradle .
-COPY build.gradle .
-COPY gradlew .
-COPY gradlew.bat .
-COPY Makefile .
-COPY database .
-COPY src .
+COPY . .
+RUN ls -a
+# COPY settings.gradle .
+# COPY build.gradle .
+# COPY gradlew .
+# COPY gradlew.bat .
+# COPY Makefile .
+# COPY database .
+# COPY src .
 
 RUN gradle wrapper
 
