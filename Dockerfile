@@ -37,6 +37,7 @@ WORKDIR /home/gradle/source
 # RUN ls
 # COPY . .
 # RUN ls -a
+COPY ci .
 COPY settings.gradle .
 COPY build.gradle .
 COPY gradlew .
