@@ -41,7 +41,7 @@ COPY build.gradle build.gradle
 COPY gradlew gradlew
 COPY gradlew.bat gradlew.bat
 
-# RUN gradle wrapper
+RUN gradle wrapper
 
 RUN ./gradlew bootJar
 
