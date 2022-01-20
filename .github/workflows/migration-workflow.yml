@@ -74,8 +74,9 @@ jobs:
       run: |
         docker run --rm -d --name starter-kit-common-test-default -p 4500:4500 -p 4501:4501 ga4gh/ga4gh-starter-kit-common:test
         docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:test --config ./src/test/resources/config/demo-config.yml
+        docker run ./gradlew test --tests=integration.*
     
-    - name: Gradle Integration Test
-      run: ./gradlew test --tests=integration.*
+    # - name: Gradle Integration Test
+    #   run: ./gradlew test --tests=integration.*
 
 
