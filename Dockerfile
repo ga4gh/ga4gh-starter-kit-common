@@ -30,31 +30,17 @@ RUN make sqlite-db-refresh
 # GRADLE CONTAINER
 ##################################################
 
-FROM gradle:jdk11 as gradleimage
+FROM gradle:7.3.3-jdk11 as gradleimage
 
 WORKDIR /home/gradle/source
 
-# RUN ls
 # COPY . .
-# RUN ls -a
-COPY build.gradle .
-COPY ci .
-COPY database .
-COPY Dockerfile .
-COPY .dockerignore .
-COPY .git .
-COPY .gitattributes .
-COPY .github .
-COPY .gitignore .
-COPY gradlew .
-COPY gradlew.bat .
-COPY LICENSE .
-COPY Makefile .
-COPY README.md .
-COPY settings.gradle .
-COPY src .
 
-RUN ls -a
+COPY build.gradle build.gradle
+COPY gradlew gradlew
+# COPY gradlew.bat gradlew.bat
+COPY settings.gradle settings.gradle
+COPY src src
 
 RUN gradle wrapper
 
