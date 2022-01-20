@@ -37,12 +37,13 @@ WORKDIR /home/gradle/source
 # RUN ls
 # COPY . .
 # RUN ls
-COPY settings.gradle settings.gradle
-COPY build.gradle build.gradle 
-COPY gradlew gradlew
-COPY gradlew.bat gradlew.bat
-COPY Makefile Makefile
-COPY database database
+COPY settings.gradle .
+COPY build.gradle .
+COPY gradlew .
+COPY gradlew.bat .
+COPY Makefile .
+COPY database .
+COPY src .
 
 RUN gradle wrapper
 
