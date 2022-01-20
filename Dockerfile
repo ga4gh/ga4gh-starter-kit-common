@@ -34,8 +34,10 @@ FROM gradle:jdk11 as gradleimage
 
 WORKDIR /home/gradle/source
 
-COPY settings.gradle settings.gradle
-COPY build.gradle build.gradle 
+COPY . .
+RUN ls
+# COPY settings.gradle settings.gradle
+# COPY build.gradle build.gradle 
 
 RUN gradle wrapper
 
