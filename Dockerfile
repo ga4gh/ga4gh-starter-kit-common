@@ -35,11 +35,13 @@ FROM gradle:jdk11 as gradleimage
 WORKDIR /home/gradle/source
 
 COPY . .
-RUN ls
-# COPY settings.gradle settings.gradle
-# COPY build.gradle build.gradle 
+# RUN ls
+COPY settings.gradle settings.gradle
+COPY build.gradle build.gradle 
+COPY gradlew gradlew
+COPY gradlew.bat gradlew.bat
 
-RUN gradle wrapper
+# RUN gradle wrapper
 
 RUN ./gradlew bootJar
 
