@@ -43,6 +43,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Setting up Gradle
+      uses: gradle/gradle-build-action@v2
+      # with:
+      #   gradle-version: 7.3.3
+
     - name: Setting Up Docker Buildx #used for caching image layers, improves performance
       id: buildx
       uses: docker/setup-buildx-action@v1
@@ -76,7 +81,7 @@ jobs:
         docker run --rm -d --name starter-kit-common-test-custom -p 7000:7000 -p 7001:7001 ga4gh/ga4gh-starter-kit-common:test --config ./src/test/resources/config/demo-config.yml
         docker run "./gradlew test --tests=integration.*"
     
-    # - name: Gradle Integration Test
-    #   run: ./gradlew test --tests=integration.*
+    - name: Gradle Integration Test
+      run: ./gradlew test --tests=integration.*
 
 
