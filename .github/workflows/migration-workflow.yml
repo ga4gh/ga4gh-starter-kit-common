@@ -53,16 +53,6 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    ##### FOR CACHING #####
-    # - name: Cache Docker layers
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: /tmp/.buildx-cache
-    #     key: ${{ runner.os }}-buildx-${{ github.sha }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-buildx-
-    #######################
-
     - name: Get and Set Version
       run: |
         source ci/set-docker-image-version.sh
@@ -77,17 +67,8 @@ jobs:
         push: true #not pushing the docker image yet
         tags: ga4gh/ga4gh-starter-kit-common:test
         build-args: VERSION=${{ env.version }}
-        cache-from: type=gha
+        cache-from: type=gha #GitHub Actions Cache Exporter
         cache-to: type=gha,mode=max
-    ##### FOR CACHING #####
-    #     cache-from: type=local,src=/tmp/.buildx-cache
-    #     cache-to: type=local,dest=/tmp/.buildx-cache-new
-
-    # - name: Move cache # about GitHub's Cache limit
-    #   run: |
-    #     rm -rf /tmp/.buildx-cache
-    #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-    ######################
 
     - name: Running Tests
       run: |
