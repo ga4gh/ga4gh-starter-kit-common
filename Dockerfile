@@ -34,33 +34,14 @@ FROM gradle:7.3.3-jdk11 as gradleimage
 
 WORKDIR /home/gradle/source
 
-# COPY . .
-
 COPY build.gradle build.gradle
 COPY gradlew gradlew
-# COPY gradlew.bat gradlew.bat
 COPY settings.gradle settings.gradle
 COPY src src
 
 RUN gradle wrapper
 
 RUN ./gradlew bootJar
-
-##################################################
-# EXPERIMENTAL GRADLE CONTAINER
-##################################################
-
-# FROM gradle:jdk11 as CACHED_GRADLE
-
-# COPY . .
-# RUN gradle clean build -i --stacktrace
-
-# FROM gradle:jdk11 as gradleimage
-
-# COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
-# COPY . /usr/src/java-code/
-# WORKDIR /usr/src/java-code
-# RUN /gradlew bootJar -i --stacktrace
 
 ##################################################
 # FINAL CONTAINER
