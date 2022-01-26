@@ -80,5 +80,3 @@ jobs:
     
     - name: Gradle Integration Test
       run: ./gradlew test --tests=integration.*
-
-
