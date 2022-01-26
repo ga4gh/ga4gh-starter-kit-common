@@ -9,9 +9,9 @@ USER root
 WORKDIR /usr/src/dependencies
 
 # INSTALL MAKE
-RUN apt update
-RUN apt install build-essential -y
-RUN apt install wget -y
+RUN apt update \
+    && apt install build-essential -y \
+    && apt install wget -y
 
 # INSTALL SQLITE3
 RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
@@ -23,10 +23,25 @@ RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
 
 # USER 'make' and 'sqlite3' to create the dev database
 COPY Makefile Makefile
-COPY settings.gradle settings.gradle
-COPY build.gradle build.gradle
 COPY database/sqlite database/sqlite
 RUN make sqlite-db-refresh
+
+##################################################
+# GRADLE CONTAINER
+##################################################
+
+FROM gradle:7.3.3-jdk11 as gradleimage
+
+WORKDIR /home/gradle/source
+
+COPY build.gradle build.gradle
+COPY gradlew gradlew
+COPY settings.gradle settings.gradle
+COPY src src
+
+RUN gradle wrapper
+
+RUN ./gradlew bootJar
 
 ##################################################
 # FINAL CONTAINER
@@ -41,7 +56,7 @@ ARG VERSION
 WORKDIR /usr/src/app
 
 # copy jar, dev db, and dev resource files
-COPY build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
+COPY --from=gradleimage /home/gradle/source/build/libs/ga4gh-starter-kit-common-${VERSION}.jar ga4gh-starter-kit-common.jar
 COPY --from=builder /usr/src/dependencies/ga4gh-starter-kit.dev.db ga4gh-starter-kit.dev.db
 COPY src/test/resources/ src/test/resources/
 
