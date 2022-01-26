@@ -1,4 +1,4 @@
-name: GitHub Actions Migration
+name: Standard Tests Workflow
 on: [push, pull_request, workflow_dispatch] #workflow_dispatch works only if its active in the main branch
 jobs:
   Unit-Test:
@@ -65,10 +65,10 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        builder: ${{ steps.buildx.outputs.name }} #didn't fix
+        builder: ${{ steps.buildx.outputs.name }}
         file: ./Dockerfile
-        push: true #not pushing the docker image yet
-        tags: ga4gh/ga4gh-starter-kit-common:test
+        push: true
+        tags: ga4gh/ga4gh-starter-kit-common:test #labelled test because it is only needed for the Gradle Integ. Tests
         build-args: VERSION=${{ env.version }}
         cache-from: type=gha #GitHub Actions Cache Exporter
         cache-to: type=gha,mode=max
