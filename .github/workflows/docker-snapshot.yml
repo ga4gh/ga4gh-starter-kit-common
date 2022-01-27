@@ -1,7 +1,7 @@
 name: Daily Docker Snapshot
 on:
   schedule: #to be pushed daily, at 07:00 PM (19:00)
-    - cron:  '* 19 * * *'
+    - cron:  '* 19 * * *' #NOTE: Only works if the workflow file is present in the default branch
 jobs:
   Pushing-Docker-Image:
     runs-on: ubuntu-latest
