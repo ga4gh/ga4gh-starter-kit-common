@@ -84,7 +84,7 @@ jobs:
   Docker-Release:
     needs: Docker-Integration-Test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' #Only runs if pushing to main
+    #if: github.ref == 'refs/heads/main' && github.event_name == 'push' #Only runs if pushing to main
     steps:
     - uses: actions/checkout@v2
 
