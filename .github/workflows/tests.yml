@@ -32,10 +32,10 @@ jobs:
     - name: Running Tests
       run: "./gradlew test --tests=org.*"
 
-    - name: After Success Submitting Code Coverage
-      run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
-        ./gradlew jacocoTestReport
-        bash <(curl -s https://codecov.io/bash)
+    # - name: After Success Submitting Code Coverage
+    #   run: | #jacocoTestReport is for testing code coverage, submits the last report to the link
+    #     ./gradlew jacocoTestReport
+    #     bash <(curl -s https://codecov.io/bash)
 
     - name: Codecov Coverage Report
       uses: codecov/codecov-action@v2
@@ -45,7 +45,6 @@ jobs:
         # name: codecov-umbrella # optional
         fail_ci_if_error: true # optional (default = false)
         verbose: true # optional (default = false)
-        override_commit: 8bae75f
 
   Docker-Integration-Test:
     needs: Unit-Test
