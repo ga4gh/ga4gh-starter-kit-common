@@ -45,6 +45,7 @@ jobs:
         # name: codecov-umbrella # optional
         fail_ci_if_error: true # optional (default = false)
         verbose: true # optional (default = false)
+        override_commit: 8bae75f
 
   Docker-Integration-Test:
     needs: Unit-Test
