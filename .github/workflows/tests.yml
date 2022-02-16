@@ -38,7 +38,7 @@ jobs:
     #     bash <(curl -s https://codecov.io/bash)
 
     - name: Codecov Coverage Report
-    - uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v2
       with:
         # files: ./coverage1.xml,./coverage2.xml # optional
         flags: unittest #optional
