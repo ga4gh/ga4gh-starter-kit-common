@@ -40,7 +40,7 @@ jobs:
     - name: Codecov Coverage Report
       uses: codecov/codecov-action@v2
       with:
-        files: ./build/reports/jacoco/test/html/jacocoTestReport.xml # optional
+        files: ./build/reports/jacoco/test/jacocoTestReport.xml # optional
         flags: unittest #optional
         # name: codecov-umbrella # optional
         fail_ci_if_error: true # optional (default = false)
