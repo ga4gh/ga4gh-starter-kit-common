@@ -38,15 +38,13 @@ jobs:
     #     bash <(curl -s https://codecov.io/bash)
 
     - name: Codecov Coverage Report
-      steps:
-      - uses: actions/checkout@master
-      - uses: codecov/codecov-action@v2
-        with:
-          # files: ./coverage1.xml,./coverage2.xml # optional
-          flags: unittest #optional
-          # name: codecov-umbrella # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+    - uses: codecov/codecov-action@v2
+      with:
+        # files: ./coverage1.xml,./coverage2.xml # optional
+        flags: unittest #optional
+        # name: codecov-umbrella # optional
+        fail_ci_if_error: true # optional (default = false)
+        verbose: true # optional (default = false)
 
   Docker-Integration-Test:
     needs: Unit-Test
