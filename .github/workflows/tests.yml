@@ -119,7 +119,7 @@ jobs:
     name: Create GitHub Release
     needs: Docker-Integration-Test
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/main' && github.event_name == 'push' #Only runs if pushing to main
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' #Only runs if pushing to main
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -135,7 +135,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: TEST-v${{ env.version }} #will be v0.5.7 for example
-          release_name: GA4GH Starter Kit - DRS TEST-v${{ env.version }}
+          tag_name: v${{ env.version }} #will be v0.5.7 for example
+          release_name: GA4GH Starter Kit - Common v${{ env.version }}
           draft: false
-          prerelease: true
+          prerelease: false
