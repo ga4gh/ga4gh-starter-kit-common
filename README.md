@@ -4,7 +4,7 @@
 [![Java 11+](https://img.shields.io/badge/java-11+-blue.svg?style=flat-square)](https://www.java.com)
 [![Gradle 7.3.3+](https://img.shields.io/badge/gradle-7.3.3+-blue.svg?style=flat-square)](https://gradle.org/)
 [![GitHub Actions](https://img.shields.io/github/workflow/status/ga4gh/ga4gh-starter-kit-common/Standard%20Tests/main)](https://github.com/ga4gh/ga4gh-starter-kit-common/actions)
-![Codecov](https://img.shields.io/codecov/c/github/ga4gh/ga4gh-starter-kit-common?style=flat-square)
+[![Codecov](https://img.shields.io/codecov/c/github/ga4gh/ga4gh-starter-kit-common?style=flat-square)](https://app.codecov.io/gh/ga4gh/ga4gh-starter-kit-common)
 
 # GA4GH Starter Kit Common
 Common utils library for GA4GH Starter Kit web services
