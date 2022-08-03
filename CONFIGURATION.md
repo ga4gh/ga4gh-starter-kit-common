@@ -30,12 +30,15 @@ starterKitDemo:
     ...
   databaseProps:
     ...
+  serviceInfo:
+    ...
 ```
 
 Under `starterKitDemo`, the following configuration objects can be provided:
 
 * `serverProps`: web service general runtime props
 * `databaseProps`: specify GA4GH common database location, access/auth, and other database-related properties
+* `serviceInfo`: customize the output of the `/service-info` response
 
 ## serverProps
 
