@@ -7,12 +7,17 @@ import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
 import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityDoesntExistException;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BasicDeleteRequestHandler<I extends Serializable, T extends HibernateEntity<I>> implements RequestHandler<T> {
 
     private Class<T> entityClass;
     private I id;
     private HibernateUtil hibernateUtil;
+
+    @Autowired
+    private LoggingUtil loggingUtil;
 
     public BasicDeleteRequestHandler(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -28,8 +33,10 @@ public class BasicDeleteRequestHandler<I extends Serializable, T extends Hiberna
             hibernateUtil.deleteEntityObject(entityClass, id);
             return hibernateUtil.readEntityObject(entityClass, id, false); // should be null
         } catch (EntityDoesntExistException ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             throw new ConflictException(ex.getMessage());
         } catch (EntityExistsException ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             throw new ConflictException(ex.getMessage());
         }
         

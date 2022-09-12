@@ -3,6 +3,8 @@ package org.ga4gh.starterkit.common.requesthandler;
 import javax.annotation.Resource;
 import org.ga4gh.starterkit.common.testutil.Student;
 import org.ga4gh.starterkit.common.testutil.TestSpringConfig;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -14,6 +16,9 @@ public class BasicShowRequestHandlerTest extends AbstractTestNGSpringContextTest
 
     @Resource
     BasicShowRequestHandler<String, Student> handler;
+
+    @Autowired
+    private LoggingUtil loggingUtil;
 
     @DataProvider(name = "showStudentCases")
     public Object[][] showStudentCases() {
@@ -53,6 +58,7 @@ public class BasicShowRequestHandlerTest extends AbstractTestNGSpringContextTest
             Assert.assertEquals(student.getFirstName(), expFirstName);
             Assert.assertEquals(student.getLastName(), expLastName);
         } catch (Exception ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertFalse(expSuccess);
             Assert.assertEquals(ex.getClass().getSimpleName(), expException);
             Assert.assertEquals(ex.getMessage(), expMessage);
