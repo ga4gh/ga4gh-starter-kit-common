@@ -10,6 +10,7 @@ import org.ga4gh.starterkit.common.util.DeepObjectMerger;
 import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.DefaultApplicationArguments;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ServerPropertySetter {
 
