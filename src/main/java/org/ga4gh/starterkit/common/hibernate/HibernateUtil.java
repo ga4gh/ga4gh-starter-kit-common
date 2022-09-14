@@ -7,10 +7,12 @@ import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityMismatchException;
 import org.ga4gh.starterkit.common.config.DatabaseProps;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityDoesntExistException;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class HibernateUtil {
 
@@ -18,6 +20,9 @@ public class HibernateUtil {
     private DatabaseProps databaseProps;
     private List<Class<? extends HibernateEntity<? extends Serializable>>> annotatedClasses;
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private LoggingUtil loggingUtil;
     
     public HibernateUtil() {
         configured = false;
@@ -35,6 +40,7 @@ public class HibernateUtil {
             setSessionFactory(configuration.buildSessionFactory());
             setConfigured(true);
         } catch (Throwable ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             throw new ExceptionInInitializerError(ex);
         }
     }
@@ -52,6 +58,7 @@ public class HibernateUtil {
             session.save(newObject);
         } catch (Exception ex) {
             // any errors need to be caught so the transaction can be closed
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             endTransaction(session);
             throw ex;
         } finally {
@@ -70,6 +77,7 @@ public class HibernateUtil {
             }
         } catch (Exception ex) {
             // any errors need to be caught so the transaction can be closed
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             endTransaction(session);
             throw ex;
         } finally {
@@ -94,6 +102,7 @@ public class HibernateUtil {
             session.update(session.merge(newObject));
         } catch (Exception ex) {
             // any errors need to be caught so the transaction can be closed
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             endTransaction(session);
             throw ex;
         } finally {
@@ -120,6 +129,7 @@ public class HibernateUtil {
             }
         } catch (Exception ex) {
             // any errors need to be caught so the transaction can be closed
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             endTransaction(session);
             throw ex;
         } finally {

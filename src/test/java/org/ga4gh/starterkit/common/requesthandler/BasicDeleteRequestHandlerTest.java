@@ -6,6 +6,7 @@ import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
 import org.ga4gh.starterkit.common.testutil.Student;
 import org.ga4gh.starterkit.common.testutil.TestSpringConfig;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -19,6 +20,9 @@ public class BasicDeleteRequestHandlerTest extends AbstractTestNGSpringContextTe
 
     @Autowired
     HibernateUtil hibernateUtil;
+
+    @Autowired
+    private LoggingUtil loggingUtil;
 
     @Resource
     BasicDeleteRequestHandler<String, Student> deleteHandler;
@@ -60,6 +64,7 @@ public class BasicDeleteRequestHandlerTest extends AbstractTestNGSpringContextTe
             Assert.assertTrue(expSuccess);
             Assert.assertNull(savedStudent);
         } catch (Exception ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertFalse(expSuccess);
             Assert.assertEquals(ex.getClass().getSimpleName(), expException);
             Assert.assertEquals(ex.getMessage(), expMessage);

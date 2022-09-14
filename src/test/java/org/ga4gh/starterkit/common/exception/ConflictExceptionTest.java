@@ -1,5 +1,7 @@
 package org.ga4gh.starterkit.common.exception;
 
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -7,6 +9,9 @@ import org.testng.annotations.Test;
 public class ConflictExceptionTest {
 
     private enum ConstructorType {SIMPLE, MESSAGE, CAUSE}
+
+    @Autowired
+    private LoggingUtil loggingUtil;
 
     @DataProvider(name = "cases")
     public Object[][] getData() {
@@ -44,6 +49,7 @@ public class ConflictExceptionTest {
                     throw new ConflictException(cause);
             }
         } catch (ConflictException ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertEquals(ex.getMessage(), expMessage);
         }
     }

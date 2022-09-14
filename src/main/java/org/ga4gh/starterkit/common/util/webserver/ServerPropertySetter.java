@@ -7,12 +7,17 @@ import org.ga4gh.starterkit.common.config.ContainsServerProps;
 import org.ga4gh.starterkit.common.config.ServerProps;
 import org.ga4gh.starterkit.common.util.CliYamlConfigLoader;
 import org.ga4gh.starterkit.common.util.DeepObjectMerger;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.DefaultApplicationArguments;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ServerPropertySetter {
 
     private DeepObjectMerger merger;
+
+    @Autowired
+    private LoggingUtil loggingUtil;
 
     public ServerPropertySetter() {
         merger = new DeepObjectMerger();
@@ -61,6 +66,7 @@ public class ServerPropertySetter {
             }
             return true;
         } catch (Exception ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             return false;
         }
     }
