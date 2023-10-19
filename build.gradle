@@ -40,7 +40,7 @@ configurations.all {
 }
 
 group 'org.ga4gh'
-version '0.5.7'
+version '0.5.7-mysql-test'
 
 repositories {
     mavenCentral()
@@ -68,7 +68,8 @@ dependencies {
     implementation 'org.hibernate:hibernate-core:5.4.11.Final'
     implementation 'org.springframework:spring-orm:5.1.6.RELEASE'
     implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
-    implementation 'org.xerial:sqlite-jdbc:3.8.11.2'
+    implementation 'org.xerial:sqlite-jdbc:3.43.0.0'
+    implementation 'com.mysql:mysql-connector-j:8.0.33'
 
     testImplementation 'org.testng:testng:7.0.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.0'
