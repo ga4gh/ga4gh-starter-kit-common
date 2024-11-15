@@ -32,11 +32,11 @@ public class CliYamlConfigLoader {
                 }
             }
         } catch (ParseException e) {
-            System.out.println("ERROR: problem encountered setting config, config not set");
+            System.out.println("ERROR: problem encountered setting config, config not set"+ e.getMessage());
         } catch (FileNotFoundException e) {
-            System.out.println("ERROR: problem encountered setting config, config file not found");
+            System.out.println("ERROR: problem encountered setting config, config file not found"+ e.getMessage());
         } catch (IOException e) {
-            System.out.println("ERROR: problem encountered setting config, config YAML could not be parsed");
+            System.out.println("ERROR: problem encountered setting config, config YAML could not be parsed"+ e.getMessage());
         }
 
         return loadedObject;

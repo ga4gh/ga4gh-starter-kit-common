@@ -40,7 +40,7 @@ configurations.all {
 }
 
 group 'org.ga4gh'
-version '0.5.7-mysql-test'
+version '0.5.8'
 
 repositories {
     mavenCentral()
