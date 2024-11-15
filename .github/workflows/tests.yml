@@ -70,7 +70,7 @@ jobs:
         builder: ${{ steps.buildx.outputs.name }}
         file: ./Dockerfile
         push: true
-        tags: ga4gh/ga4gh-starter-kit-common:test #labelled test because it is only needed for the Gradle Integ. Tests
+        tags: ga4gh/ga4gh-starter-kit-common:DOCKER_IMG_VER #labelled test because it is only needed for the Gradle Integ. Tests
         build-args: VERSION=${{ env.version }}
         cache-from: type=gha #GitHub Actions Cache Exporter
         cache-to: type=gha,mode=max
