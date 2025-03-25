@@ -2,7 +2,7 @@ package org.ga4gh.starterkit.common.hibernate;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityMismatchException;
 import org.ga4gh.starterkit.common.config.DatabaseProps;

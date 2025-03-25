@@ -40,3 +40,5 @@ gradle.properties
 
 # Exceptions to above ignore rules
 !gradle/wrapper/gradle-wrapper.jar
+.vscode/
+ga4gh-starter-kit.dev

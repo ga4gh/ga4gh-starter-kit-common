@@ -1,6 +1,6 @@
 package org.ga4gh.starterkit.common.requesthandler;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.ga4gh.starterkit.common.testutil.Student;
 import org.ga4gh.starterkit.common.testutil.TestSpringConfig;
 import org.springframework.test.context.ContextConfiguration;
