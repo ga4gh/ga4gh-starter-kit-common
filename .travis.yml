@@ -21,7 +21,7 @@ jobs:
       dist: xenial
       language: java
       jdk:
-        - openjdk11
+        - openjdk21
       services:
         - docker
       before_install:
