@@ -2,7 +2,7 @@
 # BUILDER CONTAINER
 ##################################################
 
-FROM openjdk:11.0.12-jdk-slim-buster as builder
+FROM openjdk:25-jdk-slim-bullseye as builder
 
 USER root
 
@@ -32,7 +32,7 @@ RUN make sqlite-db-refresh
 # FINAL CONTAINER
 ##################################################
 
-FROM openjdk:11.0.12-jre-slim-buster
+FROM openjdk:25-jdk-slim-bullseye
 
 USER root
 
