@@ -108,10 +108,6 @@ public class BasicCreateRequestHandlerTest extends AbstractTestNGSpringContextTe
             Assert.assertEquals(savedStudent.getFirstName(), newStudent.getFirstName());
             Assert.assertEquals(savedStudent.getLastName(), newStudent.getLastName());
         } catch (Exception ex) {
-            // For debugging purposes: 
-            // ex.printStackTrace();
-            // assertEquals("Invalid input", ex.getMessage());
-            
             Assert.assertFalse(expSuccess);
             Assert.assertEquals(ex.getClass().getSimpleName(), expException);
             Assert.assertEquals(ex.getMessage(), expMessage);

@@ -87,9 +87,6 @@ test {
     // Use TestNG for unit tests
     useTestNG()
 
-    testLogging {
-        exceptionFormat = 'full'
-    }
 }
 
 task sourceJar(type: Jar) {
