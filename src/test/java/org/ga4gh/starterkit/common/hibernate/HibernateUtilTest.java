@@ -2,6 +2,7 @@ package org.ga4gh.starterkit.common.hibernate;
 
 import org.ga4gh.starterkit.common.testutil.Student;
 import org.ga4gh.starterkit.common.testutil.TestSpringConfig;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -14,6 +15,9 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private HibernateUtil hibernateUtil;
+
+    @Autowired
+    private LoggingUtil loggingUtil;
 
     @DataProvider(name = "readEntityObjectCases")
     public Object[][] readEntityObjectCases() {
@@ -146,6 +150,7 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
             Assert.assertEquals(savedStudent.getFirstName(), newStudent.getFirstName());
             Assert.assertEquals(savedStudent.getLastName(), newStudent.getLastName());
         } catch (Exception ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertFalse(expSuccess);
             Assert.assertEquals(ex.getClass().getSimpleName(), expException);
             Assert.assertEquals(ex.getMessage(), expMessage);
@@ -163,6 +168,7 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
             Assert.assertEquals(savedStudent.getFirstName(), newStudent.getFirstName());
             Assert.assertEquals(savedStudent.getLastName(), newStudent.getLastName());
         } catch (Exception ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertFalse(expSuccess);
             Assert.assertEquals(ex.getClass().getSimpleName(), expException);
             Assert.assertEquals(ex.getMessage(), expMessage);
@@ -178,6 +184,7 @@ public class HibernateUtilTest extends AbstractTestNGSpringContextTests {
             Student savedStudent = hibernateUtil.readEntityObject(Student.class, id, false);
             Assert.assertNull(savedStudent);
         } catch (Exception ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertFalse(expSuccess);
             Assert.assertEquals(ex.getClass().getSimpleName(), expException);
             Assert.assertEquals(ex.getMessage(), expMessage);
