@@ -40,7 +40,7 @@ configurations.all {
 }
 
 group 'org.ga4gh'
-version '0.5.9'
+version '0.5.10'
 
 repositories {
     mavenCentral()
@@ -77,10 +77,13 @@ dependencies {
 
 jar {
     enabled = true
+    archiveBaseName.set('ga4gh-starter-kit-common')
+    archiveVersion.set(version)
+    archiveClassifier.set('') 
 }
 
 bootJar {
-    enabled = false
+    enabled = true
     mainClass = 'org.ga4gh.starterkit.common.demo.DemoServer'
 }
 
