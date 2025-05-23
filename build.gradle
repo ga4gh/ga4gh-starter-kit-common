@@ -6,6 +6,7 @@
  * User Manual available at https://docs.gradle.org/6.1.1/userguide/java_library_plugin.html
  */
 
+
 buildscript {
     repositories {
         mavenCentral()
@@ -27,8 +28,7 @@ plugins {
     id 'jacoco'
 
     id 'maven-publish'
-    id 'signing'
-    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
+    id 'org.jreleaser' version '1.18.0'
 }
 
 configurations.all {
@@ -40,7 +40,7 @@ configurations.all {
 }
 
 group 'org.ga4gh'
-version '0.5.9'
+version '0.5.10'
 
 repositories {
     mavenCentral()
@@ -77,9 +77,13 @@ dependencies {
 
 jar {
     enabled = true
+    archiveBaseName.set('ga4gh-starter-kit-common')
+    archiveVersion.set(version)
+    archiveClassifier.set('') 
 }
 
 bootJar {
+    enabled = true
     mainClass = 'org.ga4gh.starterkit.common.demo.DemoServer'
 }
 
@@ -89,50 +93,70 @@ test {
 
 }
 
-task sourceJar(type: Jar) {
-  from sourceSets.main.allJava
-  archiveClassifier = "sources"
-}
-
 publishing {
-  publications {
-    myPublication(MavenPublication) {
-      from components.java
-      // artifact sourceJar
-      pom {
-        name = "ga4gh-starter-kit-common"
-        description = "Common utils library for GA4GH Starter Kit web services"
-        url = "https://github.com/ga4gh/ga4gh-starter-kit-common"
-        licenses {
-          license {
-            name = "The Apache License, Version 2.0"
-            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-          }
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.ga4gh'
+            artifactId = 'ga4gh-starter-kit-common'
+
+            from components.java
+
+            pom {
+              name = "ga4gh-starter-kit-common"
+              description = "Common utils library for GA4GH Starter Kit web services"
+              inceptionYear = "2025"
+              url = "https://github.com/ga4gh/ga4gh-starter-kit-common"
+
+              licenses {
+                license {
+                  name = "The Apache License, Version 2.0"
+                  url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                  distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                }
+              }
+
+              developers {
+                developer {
+                    id = project.findProperty("devId")
+                    name = project.findProperty("devName")
+                    email = project.findProperty("devEmail")
+                }
+              }
+
+              scm {
+                  connection = "scm:https://github.com/ga4gh/ga4gh-starter-kit-common.git"
+                  developerConnection = "scm:git://github.com/ga4gh/ga4gh-starter-kit-common.git"
+                  url = "https://github.com/ga4gh/ga4gh-starter-kit-common"
+              }
+            }
         }
-        developers {
-          developer {
-            id = "jb-adams"
-            name = "Jeremy Adams"
-            email = "jeremy.adams@ga4gh.org"
-          }
-        }
-        scm {
-          connection = "scm:https://github.com/ga4gh/ga4gh-starter-kit-common.git"
-          developerConnection = "scm:git://github.com/ga4gh/ga4gh-starter-kit-common.git"
-          url = "https://github.com/ga4gh/ga4gh-starter-kit-common"
-        }
-      }
     }
-  }
-}
 
-signing {
-    sign publishing.publications.myPublication
-}
-
-nexusPublishing {
-    packageGroup = "org.ga4gh"
     repositories {
-        sonatype()
+        maven {
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+    }
+}
+
+jreleaser {
+    signing {
+        active = 'ALWAYS'
+        armored = true
+        mode = 'FILE'
+        publicKey = System.getenv("PUBLIC_KEY_PATH")
+        secretKey = System.getenv("PRIVATE_KEY_PATH")
+    }
+    
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('build/staging-deploy')
+                }
+            }
+        }
     }
 }

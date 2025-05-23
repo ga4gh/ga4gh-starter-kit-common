@@ -42,3 +42,5 @@ gradle.properties
 !gradle/wrapper/gradle-wrapper.jar
 .vscode/
 ga4gh-starter-kit.dev
+
+**/.DS_Store
