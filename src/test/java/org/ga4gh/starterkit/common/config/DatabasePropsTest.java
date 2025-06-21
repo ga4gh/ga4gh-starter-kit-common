@@ -5,6 +5,7 @@ import java.util.Properties;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
 
 public class DatabasePropsTest {
 
@@ -41,6 +42,9 @@ public class DatabasePropsTest {
         };
     }
 
+    @Autowired
+    private LoggingUtil loggingUtil;
+
     @Test(dataProvider = "cases")
     public void testGetAllProperties(String url, String username, String password, String poolSize, String showSQL, boolean expSuccess, DatabaseType expDatabaseType) {
         DatabaseProps dbProps = new DatabaseProps();
@@ -71,6 +75,7 @@ public class DatabasePropsTest {
             }
 
         } catch (IllegalArgumentException ex) {
+            loggingUtil.error("Exception occurred: " + ex.getMessage());
             Assert.assertFalse(expSuccess);
         }
     }
