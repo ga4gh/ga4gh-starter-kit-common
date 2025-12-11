@@ -138,13 +138,13 @@ nexusPublishing {
 }
 
 jacoco {
-    toolVersion = '0.8.5'
-    reportsDir = file("$buildDir/reports/jacoco")
+    toolVersion = '0.8.10' // update to latest compatible version
 }
 
-jacocoTestReport {
+tasks.jacocoTestReport {
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.required.set(true)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco"))
     }
 }
