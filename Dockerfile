@@ -36,6 +36,7 @@ WORKDIR /home/gradle/source
 
 COPY build.gradle build.gradle
 COPY gradlew gradlew
+COPY gradle/wrapper gradle/wrapper
 COPY settings.gradle settings.gradle
 COPY src src
 
