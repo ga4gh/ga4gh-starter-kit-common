@@ -30,7 +30,7 @@ RUN make sqlite-db-refresh
 # GRADLE CONTAINER
 ##################################################
 
-FROM gradle:8.3-jdk17 as gradleimage
+FROM gradle:8.3-jdk17 AS gradleimage
 
 WORKDIR /home/gradle/source
 
@@ -40,9 +40,7 @@ COPY gradle/wrapper gradle/wrapper
 COPY settings.gradle settings.gradle
 COPY src src
 
-RUN chmod +x gradlew
-RUN ./gradlew wrapper
-RUN ./gradlew bootJar
+RUN chmod +x gradlew && ./gradlew bootJar
 
 ##################################################
 # FINAL CONTAINER
