@@ -2,7 +2,7 @@
 # BUILDER CONTAINER
 ##################################################
 
-FROM openjdk:11.0.12-jdk-slim-buster as builder
+FROM eclipse-temurin:17-jdk AS builder
 
 USER root
 
@@ -22,6 +22,8 @@ RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
     && make install
 
 # USER 'make' and 'sqlite3' to create the dev database
+COPY build.gradle build.gradle
+COPY settings.gradle settings.gradle
 COPY Makefile Makefile
 COPY database/sqlite database/sqlite
 RUN make sqlite-db-refresh
@@ -30,24 +32,23 @@ RUN make sqlite-db-refresh
 # GRADLE CONTAINER
 ##################################################
 
-FROM gradle:7.3.3-jdk11 as gradleimage
+FROM gradle:8.3-jdk17 AS gradleimage
 
 WORKDIR /home/gradle/source
 
 COPY build.gradle build.gradle
 COPY gradlew gradlew
+COPY gradle/wrapper gradle/wrapper
 COPY settings.gradle settings.gradle
 COPY src src
 
-RUN gradle wrapper
-
-RUN ./gradlew bootJar
+RUN chmod +x gradlew && ./gradlew bootJar
 
 ##################################################
 # FINAL CONTAINER
 ##################################################
 
-FROM openjdk:11.0.12-jre-slim-buster
+FROM eclipse-temurin:17-jre
 
 USER root
 

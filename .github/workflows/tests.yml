@@ -6,14 +6,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setting up JDK 11
-      uses: actions/setup-java@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
       with:
-        java-version: '11'
-        distribution: 'adopt' #using a specific distribution of jdk11 (AdoptOpenJDK)
+        java-version: '17'
+        distribution: 'temurin'
 
     - name: Setting up Gradle
       uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 8.3
 
     - name: Setting up Gradle Wrapper
       run: "gradle wrapper"
@@ -68,7 +70,7 @@ jobs:
         builder: ${{ steps.buildx.outputs.name }}
         file: ./Dockerfile
         push: true
-        tags: ga4gh/ga4gh-starter-kit-common:test #labelled test because it is only needed for the Gradle Integ. Tests
+        tags: ga4gh/ga4gh-starter-kit-common:DOCKER_IMG_VER #labelled test because it is only needed for the Gradle Integ. Tests
         build-args: VERSION=${{ env.version }}
         cache-from: type=gha #GitHub Actions Cache Exporter
         cache-to: type=gha,mode=max

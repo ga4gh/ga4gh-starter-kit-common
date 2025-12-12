@@ -36,7 +36,7 @@ public class DatabasePropsTest {
                 "1",
                 "false",
                 false,
-                null
+                DatabaseType.mysql
             }
         };
     }
@@ -68,6 +68,11 @@ public class DatabasePropsTest {
                     Assert.assertEquals(props.getProperty("hibernate.connection.driver_class"), "org.postgresql.Driver");
                     Assert.assertEquals(props.getProperty("hibernate.dialect"), "org.hibernate.dialect.PostgreSQLDialect");
                     break;
+                case mysql:
+                    Assert.assertEquals(props.getProperty("hibernate.connection.driver_class"), "com.mysql.cj.jdbc.Driver");
+                    Assert.assertEquals(props.getProperty("hibernate.dialect"), "org.hibernate.dialect.MySQL8Dialect");
+                    break;
+
             }
 
         } catch (IllegalArgumentException ex) {
