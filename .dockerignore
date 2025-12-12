@@ -2,4 +2,5 @@
 .gradle/
 bin/
 build/
-gradle/
+#gradle/
+!gradle/wrapper/**
