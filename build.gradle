@@ -40,7 +40,7 @@ configurations.all {
 }
 
 group 'org.ga4gh'
-version '0.5.8'
+version '0.5.10'
 
 repositories {
     mavenCentral()
