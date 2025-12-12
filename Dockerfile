@@ -22,6 +22,8 @@ RUN wget https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
     && make install
 
 # USER 'make' and 'sqlite3' to create the dev database
+COPY build.gradle build.gradle
+COPY settings.gradle settings.gradle
 COPY Makefile Makefile
 COPY database/sqlite database/sqlite
 RUN make sqlite-db-refresh
