@@ -62,10 +62,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
     implementation 'commons-cli:commons-cli:1.4'
     implementation 'commons-io:commons-io:2.8.0'
-<<<<<<< HEAD
     implementation 'com.mysql:mysql-connector-j:8.0.33'
-=======
->>>>>>> main
     implementation 'com.fasterxml.jackson.core:jackson-core:2.18.3'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.3'
@@ -87,22 +84,13 @@ jar {
 }
 
 bootJar {
-<<<<<<< HEAD
-=======
     enabled = true
->>>>>>> main
     mainClass = 'org.ga4gh.starterkit.common.demo.DemoServer'
 }
 
 test {
     // Use TestNG for unit tests
     useTestNG()
-<<<<<<< HEAD
-
-}
-=======
->>>>>>> main
-
 }
 
 publishing {
