@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
 *.ear
@@ -40,7 +41,8 @@ gradle.properties
 
 # Exceptions to above ignore rules
 !gradle/wrapper/gradle-wrapper.jar
+
+#Ignore DS_Store
+.DS_Store
 .vscode/
 ga4gh-starter-kit.dev
-
-**/.DS_Store

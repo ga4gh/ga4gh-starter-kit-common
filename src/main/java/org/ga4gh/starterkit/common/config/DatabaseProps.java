@@ -12,6 +12,8 @@ import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.SQLITE
 import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.SQLITE_DATE_CLASS;
 import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.POSTGRES_DRIVER_CLASS;
 import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.POSTGRES_DIALECT;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.MYSQL_DRIVER_CLASS;
+import static org.ga4gh.starterkit.common.constant.DatabasePropsConstants.MYSQL_DIALECT;
 
 public class DatabaseProps {
 
@@ -56,6 +58,9 @@ public class DatabaseProps {
             case postgres:
                 assignPostgresProperties(props);
                 break;
+            case mysql:
+                assignMySQLProperties(props);
+                break;
         }
 
         return props;
@@ -70,6 +75,10 @@ public class DatabaseProps {
         if (url.startsWith("jdbc:postgresql")) {
             return DatabaseType.postgres;
         }
+
+        if (url.startsWith("jdbc:mysql")) {
+            return DatabaseType.mysql;
+        }
         
         throw new IllegalArgumentException("Invalid JDBC URL: MUST be a valid 'sqlite' or 'postgresql' JDBC URL");
     }
@@ -83,6 +92,11 @@ public class DatabaseProps {
     private void assignPostgresProperties(Properties props) {
         props.setProperty("hibernate.connection.driver_class", POSTGRES_DRIVER_CLASS);
         props.setProperty("hibernate.dialect", POSTGRES_DIALECT);
+    }
+
+    private void assignMySQLProperties(Properties props) {
+        props.setProperty("hibernate.connection.driver_class", MYSQL_DRIVER_CLASS);
+        props.setProperty("hibernate.dialect", MYSQL_DIALECT);
     }
     
     /* Setters and getters */

@@ -40,7 +40,7 @@ configurations.all {
 }
 
 group 'org.ga4gh'
-version '0.5.10'
+version '0.5.11'
 
 repositories {
     mavenCentral()
@@ -62,6 +62,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
     implementation 'commons-cli:commons-cli:1.4'
     implementation 'commons-io:commons-io:2.8.0'
+    implementation 'com.mysql:mysql-connector-j:8.0.33'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.18.3'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.3'
@@ -90,7 +91,6 @@ bootJar {
 test {
     // Use TestNG for unit tests
     useTestNG()
-
 }
 
 publishing {
@@ -158,5 +158,17 @@ jreleaser {
                 }
             }
         }
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.10' // update to latest compatible version
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco"))
     }
 }

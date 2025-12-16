@@ -22,4 +22,8 @@ public class DatabasePropsConstants {
     // constants for postgres db type
     public static final String POSTGRES_DRIVER_CLASS = "org.postgresql.Driver";
     public static final String POSTGRES_DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
+
+    // constants for mysql db type
+    public static final String MYSQL_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
+    public static final String MYSQL_DIALECT = "org.hibernate.dialect.MySQL8Dialect";
 }
