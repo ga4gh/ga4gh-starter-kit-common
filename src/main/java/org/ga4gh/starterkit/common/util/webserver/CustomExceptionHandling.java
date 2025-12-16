@@ -6,6 +6,7 @@ import org.ga4gh.starterkit.common.exception.CustomException;
 import org.ga4gh.starterkit.common.exception.CustomExceptionResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -27,7 +28,7 @@ public class CustomExceptionHandling extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
         MissingServletRequestParameterException ex, HttpHeaders headers,
-        HttpStatus status, WebRequest request
+        HttpStatusCode status, WebRequest request
     ) {
         return yieldResponseEntity(HttpStatus.BAD_REQUEST, ex);
     }
@@ -35,7 +36,7 @@ public class CustomExceptionHandling extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
         HttpRequestMethodNotSupportedException ex, HttpHeaders headers,
-        HttpStatus status, WebRequest request
+        HttpStatusCode status, WebRequest request
     ) {
         return yieldResponseEntity(HttpStatus.METHOD_NOT_ALLOWED, ex);
     }

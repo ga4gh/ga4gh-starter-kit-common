@@ -44,3 +44,5 @@ gradle.properties
 
 #Ignore DS_Store
 .DS_Store
+.vscode/
+ga4gh-starter-kit.dev

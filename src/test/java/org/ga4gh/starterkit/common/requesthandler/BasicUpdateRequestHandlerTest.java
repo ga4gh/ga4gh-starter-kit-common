@@ -1,6 +1,6 @@
 package org.ga4gh.starterkit.common.requesthandler;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityDoesntExistException;
 import org.ga4gh.starterkit.common.hibernate.exception.EntityExistsException;
