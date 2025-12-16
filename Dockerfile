@@ -1,7 +1,6 @@
 ##################################################
 # BUILDER CONTAINER
 ##################################################
-
 FROM eclipse-temurin:17-jdk AS builder
 
 USER root
@@ -43,7 +42,6 @@ RUN chmod +x gradlew && ./gradlew bootJar
 ##################################################
 # FINAL CONTAINER
 ##################################################
-
 FROM eclipse-temurin:17-jre
 
 USER root
